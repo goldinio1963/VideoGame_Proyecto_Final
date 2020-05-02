@@ -49,7 +49,7 @@ public class MyGdxGame extends ApplicationAdapter {
             img6 = new Texture("Game.jpg");
             img7 = new Texture("Game2.jpg");
             img8 = new Texture("Game3.jpg");
-            img9 = new Texture("GameOver.jpg");
+            img9 = new Texture("GameOVER.jpg");
             img10 = new Texture("final.jpg");
         }
 
