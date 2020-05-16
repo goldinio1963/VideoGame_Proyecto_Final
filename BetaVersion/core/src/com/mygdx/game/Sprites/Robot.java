@@ -8,9 +8,11 @@ package com.mygdx.game.Sprites;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -33,11 +35,13 @@ public class Robot extends Sprite{
     private Animation playerStanding;
     private float stateTimer;
     private boolean runningRight; 
+    public float shootDelay = 0.5f;
+    public float timeSinceLastShot = 0f;
     
     
-    public Robot (World world, Level1Screen screen) {
+    public Robot (Level1Screen screen) {
         super(screen.getalAtlas().findRegion("player_and_enemy"));
-        this.world = world;
+        this.world = screen.getWorld();
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
@@ -88,9 +92,22 @@ public class Robot extends Sprite{
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(6 / Horror.PPM);
+        fdef.filter.categoryBits = Horror.ROBOT_BIT;
+        
+        fdef.filter.maskBits = Horror.GROUND_BIT | Horror.ENEMY_BIT;
+        
+        
         
         fdef.shape = shape;
         b2body.createFixture(fdef);
+        
+        EdgeShape head = new EdgeShape();
+        head.set(new Vector2(-2/Horror.PPM,6/Horror.PPM), 
+                new Vector2(2/Horror.PPM,5/Horror.PPM));
+        
+        fdef.shape = head;
+        fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData("head");
     }
     
     public void update(float delta) {

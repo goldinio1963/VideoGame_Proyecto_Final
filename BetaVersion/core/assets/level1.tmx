@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="240" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="47">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="240" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="81">
  <tileset firstgid="1" source="New Piskel.tsx"/>
  <layer id="5" name="sky" width="240" height="13">
   <data encoding="csv">
@@ -107,5 +107,36 @@
   <object id="44" x="656" y="144.5" width="31.5" height="21.75"/>
   <object id="45" x="336.25" y="144.25" width="31.75" height="23"/>
   <object id="46" x="47.75" y="143.75" width="64" height="27"/>
+  <object id="48" x="0" y="-1" width="8.66667" height="161"/>
+  <object id="49" x="3828.67" y="-0.333333" width="12" height="160"/>
+ </objectgroup>
+ <objectgroup id="7" name="Ghosts">
+  <object id="52" x="222" y="149"/>
+  <object id="53" x="398.333" y="149.333"/>
+  <object id="54" x="544.333" y="149.333"/>
+  <object id="55" x="468.667" y="149.333"/>
+  <object id="56" x="810.667" y="102.333"/>
+  <object id="57" x="889.333" y="101.667"/>
+  <object id="58" x="1028.67" y="150.333"/>
+  <object id="59" x="1090" y="131"/>
+  <object id="60" x="1155" y="130"/>
+  <object id="61" x="1558.33" y="148"/>
+  <object id="62" x="1599.33" y="131.333"/>
+  <object id="63" x="1426.67" y="148.333"/>
+  <object id="64" x="1308.33" y="115.333"/>
+  <object id="66" x="3565.33" y="146.333"/>
+  <object id="67" x="3655.33" y="146.667"/>
+  <object id="68" x="3449" y="130"/>
+  <object id="69" x="3387.33" y="146.667"/>
+  <object id="70" x="2968.67" y="148.333"/>
+  <object id="71" x="2852" y="149"/>
+  <object id="72" x="2654.67" y="147.667"/>
+  <object id="73" x="2507" y="147.667"/>
+  <object id="75" x="2404.33" y="133"/>
+  <object id="76" x="2284" y="148"/>
+  <object id="77" x="2096.67" y="132.667"/>
+  <object id="78" x="1995.67" y="132"/>
+  <object id="79" x="1737.33" y="147.667"/>
+  <object id="80" x="1856.67" y="146.667"/>
  </objectgroup>
 </map>

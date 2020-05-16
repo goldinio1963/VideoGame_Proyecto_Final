@@ -24,8 +24,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Horror;
 import com.mygdx.game.Scenes.Hud;
+import com.mygdx.game.Sprites.EnemyStandard;
+import com.mygdx.game.Sprites.Ghost;
 import com.mygdx.game.Sprites.Robot;
 import com.mygdx.game.Tools.B2WorldCreator;
+import com.mygdx.game.Tools.WorldContactListener;
 import com.mygdx.game.graph.Background;
 
 /**
@@ -54,9 +57,12 @@ public class Level1Screen extends DefaultScreen{
     //Box2d world
     private World world;
     private Box2DDebugRenderer b2dr;
+    private B2WorldCreator creator;
     
     //Player
     private Robot player;
+    
+    //enemies
     
     //Sprites
     private TextureAtlas atlas;
@@ -86,15 +92,22 @@ public class Level1Screen extends DefaultScreen{
         world = new World(new Vector2(0, -9.18f), true);
         b2dr = new Box2DDebugRenderer();
         
-        new B2WorldCreator(world, map);
+        creator = new B2WorldCreator(this);
         
-        player = new Robot(world, this);
+        player = new Robot(this);
         //create a window to handle all the ui elements
         //gameSatge = new Stage(gameport, batch);
         //bg = new Background();
+        world.setContactListener(new WorldContactListener());
     }
     
+    public TiledMap getMap() {
+        return map;
+    }
     
+    public World getWorld() {
+        return world;
+    }
     public TextureAtlas getalAtlas() {
         return atlas;
     }
@@ -112,6 +125,8 @@ public class Level1Screen extends DefaultScreen{
             player.b2body.applyLinearImpulse(new Vector2(-0.1f,0), 
                     player.b2body.getWorldCenter(), true);
         }
+        
+        
     }
     
     public void update(float delta) {
@@ -120,6 +135,12 @@ public class Level1Screen extends DefaultScreen{
         world.step(1/60f, 6, 2);
         
         player.update(delta);
+        hud.update(delta);
+        
+        for(EnemyStandard enemy : creator.getGhosts()){
+            enemy.update(delta);
+        }
+        
         
         gamecam.position.x = player.b2body.getPosition().x;
         
@@ -144,6 +165,9 @@ public class Level1Screen extends DefaultScreen{
         batch.setProjectionMatrix(gamecam.combined);
         batch.begin();
         player.draw(batch);
+        for(EnemyStandard enemy : creator.getGhosts()){
+            enemy.draw(batch);
+        }
         batch.end();
         
         //draw hud of the game

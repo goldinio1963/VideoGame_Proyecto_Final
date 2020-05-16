@@ -14,14 +14,21 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Horror;
+import com.mygdx.game.Sprites.Ghost;
+import com.mygdx.game.screens.Level1Screen;
 
 /**
  *
  * @author Adolfo
  */
 public class B2WorldCreator {
-    public B2WorldCreator (World world, TiledMap map) {
+    private Array<Ghost> ghosts;
+   
+    public B2WorldCreator (Level1Screen screen) {
+        World world = screen.getWorld();
+        TiledMap map = screen.getMap();
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
@@ -43,6 +50,18 @@ public class B2WorldCreator {
             fdef.shape = shape;
             body.createFixture(fdef);
         }
+        
+        //create all ghosts
+        ghosts = new Array<Ghost>();
+        for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            ghosts.add(new Ghost(screen, rect.getX() / Horror.PPM, rect.getY() / Horror.PPM));
+        }
+        
+    }
+    
+    public Array<Ghost> getGhosts() {
+        return ghosts;
     }
     
 }

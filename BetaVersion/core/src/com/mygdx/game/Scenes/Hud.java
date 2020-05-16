@@ -26,12 +26,12 @@ public class Hud implements Disposable{
     private Viewport viewport;
     
     private Integer level;
-    private Integer score;
+    private static Integer score;
     
-    Label countdownLabel;
-    Label scoreLabel;
-    Label levelLabel;
-    Label livesLabel;
+    private Label countdownLabel;
+    private  static Label scoreLabel;
+    private Label levelLabel;
+    private Label livesLabel;
     
     public Hud (SpriteBatch sb) {
         score = 0;
@@ -49,9 +49,9 @@ public class Hud implements Disposable{
         
         scoreLabel = new Label(String.format("%02d", score), 
                 new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        levelLabel = new Label("Level-" + String.format("%01d", score), 
+        levelLabel = new Label("Level-" + String.format("%01d", level), 
                 new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        livesLabel = new Label ("Live", 
+        livesLabel = new Label ("Lives", 
                 new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         
         table.add(livesLabel).expandX().padTop(10);
@@ -59,6 +59,15 @@ public class Hud implements Disposable{
         table.add(scoreLabel).expandX().padTop(10);
         
         stage.addActor(table);
+    }
+    
+    public void update(float delta) {
+        
+    }
+    
+    public static void addScore(int value){
+        score += value;
+        scoreLabel.setText(String.format("%02d", score));
     }
 
     @Override
