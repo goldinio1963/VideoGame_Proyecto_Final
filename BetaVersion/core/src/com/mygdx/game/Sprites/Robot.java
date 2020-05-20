@@ -94,7 +94,9 @@ public class Robot extends Sprite{
         shape.setRadius(6 / Horror.PPM);
         fdef.filter.categoryBits = Horror.ROBOT_BIT;
         
-        fdef.filter.maskBits = Horror.GROUND_BIT | Horror.ENEMY_BIT;
+        fdef.filter.maskBits = Horror.GROUND_BIT | 
+                Horror.ENEMY_BIT |
+                Horror.OBJECT_BIT;
         
         
         

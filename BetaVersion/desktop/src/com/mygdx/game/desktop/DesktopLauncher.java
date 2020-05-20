@@ -7,6 +7,7 @@ import com.mygdx.game.Horror;
 
 public class DesktopLauncher {
 
+    
     static void pack() {
         TexturePacker.Settings settings = new TexturePacker.Settings();
         settings.maxWidth = 2048;
@@ -14,9 +15,10 @@ public class DesktopLauncher {
         settings.pot = true;
         TexturePacker.process(settings, "packed", "pack", "game");
     }
+    
 
     public static void main(String[] arg) {
-        pack();
+        //pack();
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         new LwjglApplication(new Horror(), config);
     }

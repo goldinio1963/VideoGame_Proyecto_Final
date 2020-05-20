@@ -10,6 +10,8 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.mygdx.game.Horror;
+import com.mygdx.game.Sprites.Enemy.EnemyStandard;
 
 /**
  *
@@ -26,8 +28,18 @@ public class WorldContactListener implements ContactListener {
         
         switch (cDef){
             
-            //Case the ghost coliscion with object
-            
+            case Horror.ENEMY_BIT | Horror.OBJECT_BIT:
+                if(fixA.getFilterData().categoryBits == Horror.ENEMY_BIT)
+                    ((EnemyStandard)fixA.getUserData()).reverseVelocity(true, false);
+                else
+                    ((EnemyStandard)fixB.getUserData()).reverseVelocity(true, false);
+                break;
+            case Horror.ENEMY_BIT | Horror.ENEMY_BIT:
+                if(fixA.getFilterData().categoryBits == Horror.ENEMY_BIT)
+                    ((EnemyStandard)fixA.getUserData()).reverseVelocity(true, false);
+                else
+                    ((EnemyStandard)fixB.getUserData()).reverseVelocity(true, false);
+                break;
         }
     }
 

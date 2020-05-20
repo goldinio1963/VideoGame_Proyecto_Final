@@ -24,8 +24,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Horror;
 import com.mygdx.game.Scenes.Hud;
-import com.mygdx.game.Sprites.EnemyStandard;
-import com.mygdx.game.Sprites.Ghost;
+import com.mygdx.game.Sprites.Ally.Human;
+import com.mygdx.game.Sprites.Enemy.EnemyStandard;
+import com.mygdx.game.Sprites.Enemy.Ghost;
 import com.mygdx.game.Sprites.Robot;
 import com.mygdx.game.Tools.B2WorldCreator;
 import com.mygdx.game.Tools.WorldContactListener;
@@ -62,6 +63,9 @@ public class Level1Screen extends DefaultScreen{
     //Player
     private Robot player;
     
+    //ally
+    private Human human;
+    
     //enemies
     
     //Sprites
@@ -95,6 +99,7 @@ public class Level1Screen extends DefaultScreen{
         creator = new B2WorldCreator(this);
         
         player = new Robot(this);
+        human = new Human(this);
         //create a window to handle all the ui elements
         //gameSatge = new Stage(gameport, batch);
         //bg = new Background();

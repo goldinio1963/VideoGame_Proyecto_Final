@@ -16,7 +16,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Horror;
-import com.mygdx.game.Sprites.Ghost;
+import com.mygdx.game.Sprites.Enemy.Ghost;
 import com.mygdx.game.screens.Level1Screen;
 
 /**
@@ -34,6 +34,7 @@ public class B2WorldCreator {
         FixtureDef fdef = new FixtureDef();
         Body body;
         
+        //create the fixtures of the gorund
         for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             
@@ -50,6 +51,26 @@ public class B2WorldCreator {
             fdef.shape = shape;
             body.createFixture(fdef);
         }
+        
+        //create the fixtures of the pipes
+        for(MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            
+            
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set((rect.getX() +  rect.getWidth()/2)/Horror.PPM, 
+                    (rect.getY() + rect.getHeight()/2)/Horror.PPM);
+            
+            body = world.createBody(bdef);
+            
+            shape.setAsBox(rect.getWidth()/2 / Horror.PPM, 
+                    rect.getHeight()/2 / Horror.PPM);
+            
+            fdef.shape = shape;
+            fdef.filter.categoryBits = Horror.OBJECT_BIT;
+            body.createFixture(fdef);
+        }
+        
         
         //create all ghosts
         ghosts = new Array<Ghost>();
