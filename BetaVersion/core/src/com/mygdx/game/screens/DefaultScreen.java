@@ -16,8 +16,8 @@ public class DefaultScreen implements Screen{
     
     protected Horror game;
 
-    DefaultScreen (Horror _game) {
-        this.game = _game;
+    DefaultScreen (Horror game) {
+        this.game = game;
     }
     
     @Override

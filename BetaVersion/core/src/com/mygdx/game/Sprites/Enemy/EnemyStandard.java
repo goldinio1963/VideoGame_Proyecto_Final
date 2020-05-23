@@ -45,4 +45,6 @@ public abstract class EnemyStandard extends Sprite{
             velocity.y = -velocity.y;
         }
     }
+    
+    public abstract void hitHuman();
 }

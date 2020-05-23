@@ -27,15 +27,19 @@ public class Hud implements Disposable{
     
     private Integer level;
     private static Integer score;
+    private static Integer lives;
     
-    private Label countdownLabel;
-    private  static Label scoreLabel;
+    private Label robotLabel;
+    private Label worldLabrl;
+    private Label levelScoreLebel;
+    private static Label scoreLabel;
     private Label levelLabel;
-    private Label livesLabel;
+    private static Label livesLabel;
     
     public Hud (SpriteBatch sb) {
         score = 0;
         level = 1;
+        lives = 3;
         
         
         viewport = new FitViewport(Horror.V_WIDTH, Horror.V_HEIGHT, 
@@ -47,16 +51,29 @@ public class Hud implements Disposable{
         table.top();
         table.setFillParent(true);
         
-        scoreLabel = new Label(String.format("%02d", score), 
+        
+         robotLabel = new Label("Vidas", 
                 new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        levelLabel = new Label("Level-" + String.format("%01d", level), 
+         worldLabrl = new Label("Nivel", 
                 new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        livesLabel = new Label ("Lives", 
+         levelScoreLebel = new Label ("Score", 
                 new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         
+        scoreLabel = new Label(String.format("%02d", score), 
+                new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        levelLabel = new Label(String.format("%01d", level), 
+                new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        livesLabel = new Label (String.format("%01d", lives), 
+                new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        
+        table.add(robotLabel).expandX().padTop(10);
+        table.add(worldLabrl).expandX().padTop(10);
+        table.add(levelScoreLebel).expandX().padTop(10);
+        table.row();
         table.add(livesLabel).expandX().padTop(10);
         table.add(levelLabel).expandX().padTop(10);
         table.add(scoreLabel).expandX().padTop(10);
+        
         
         stage.addActor(table);
     }
@@ -68,6 +85,13 @@ public class Hud implements Disposable{
     public static void addScore(int value){
         score += value;
         scoreLabel.setText(String.format("%02d", score));
+    }
+    
+    public static void addLives(int value){
+        lives += value;
+        if(lives >= 0 ){
+            livesLabel.setText(String.format("%01d", lives));
+        }
     }
 
     @Override

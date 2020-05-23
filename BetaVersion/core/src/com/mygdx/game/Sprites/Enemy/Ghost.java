@@ -8,6 +8,7 @@ package com.mygdx.game.Sprites.Enemy;
 import com.mygdx.game.Sprites.Enemy.EnemyStandard;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -25,14 +26,18 @@ public class Ghost extends EnemyStandard{
     private float stateTime;
     private Animation walk;
     private Array<TextureRegion> frames;
+    private boolean setToDestroy;
+    private boolean destroy;
 
     public Ghost(Level1Screen screen, float x, float y) {
         super(screen, x, y);
+        setToDestroy = false;
+        destroy = false;
         
         frames = new Array<TextureRegion>();
-        for(int i=0; i <3; i++){
-            frames.add(new TextureRegion(screen.getalAtlas().findRegion("player_and_enemy")
-                    , i*40+4,0,40,72));
+        for(int i=0; i <4 ; i++){
+            frames.add(new TextureRegion(screen.getalAtlas().findRegion("ghost")
+                    , i*27,0,27,50));
         }
         walk = new Animation(0.4f, frames);
         stateTime=0;
@@ -42,10 +47,18 @@ public class Ghost extends EnemyStandard{
     
     public void update(float delta){
         stateTime += delta;
-        setPosition(b2body.getPosition().x - getWidth()/2, 
-                b2body.getPosition().y - getHeight()/2);
-        setRegion((TextureRegion) walk.getKeyFrame(stateTime, true));
-        b2body.setLinearVelocity(velocity);
+        
+        if(setToDestroy && !destroy){
+            world.destroyBody(b2body);
+            destroy = true;
+        } else {
+            if(!destroy) {
+                setPosition(b2body.getPosition().x - getWidth() / 2,
+                        b2body.getPosition().y - getHeight() / 2);
+                setRegion((TextureRegion) walk.getKeyFrame(stateTime, true));
+                b2body.setLinearVelocity(velocity);
+            }
+        }
     }
     
     @Override
@@ -62,12 +75,25 @@ public class Ghost extends EnemyStandard{
         fdef.filter.maskBits = Horror.GROUND_BIT | 
                 Horror.ROBOT_BIT |
                 Horror.ENEMY_BIT |
-                Horror.OBJECT_BIT;
+                Horror.HUMAN_BIT |
+                Horror.OBJECT_BIT |
+                Horror.SKY_BIT |
+                Horror.EDGE_BIT; 
         
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
     }
     
+    public void draw(Batch batch){
+        if(!destroy){
+            super.draw(batch);
+        }
+    }
+    
+    
+    public void hitHuman(){
+        setToDestroy=true;
+    }
     
     
 }

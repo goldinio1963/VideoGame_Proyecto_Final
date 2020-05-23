@@ -25,7 +25,11 @@ public class Horror extends Game {
     public static final short ROBOT_BIT = 2;
     public static final short DESTROYED_BIT = 16;
     public static final short OBJECT_BIT = 32;
+    public static final short EDGE_BIT = 4;
+    public static final short SKY_BIT = 8;
     public static final short ENEMY_BIT = 64;
+    public static final short HUMAN_BIT = 128;
+    public static final short HOLE_BIT = 256;
 
     @Override
     public void create() {

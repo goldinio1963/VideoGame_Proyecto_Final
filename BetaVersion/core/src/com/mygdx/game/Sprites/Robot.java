@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Horror;
+import com.mygdx.game.Scenes.Hud;
 import com.mygdx.game.screens.Level1Screen;
 
 /**
@@ -40,7 +41,7 @@ public class Robot extends Sprite{
     
     
     public Robot (Level1Screen screen) {
-        super(screen.getalAtlas().findRegion("player_and_enemy"));
+        super(screen.getalAtlas().findRegion("player"));
         this.world = screen.getWorld();
         currentState = State.STANDING;
         previousState = State.STANDING;
@@ -49,43 +50,35 @@ public class Robot extends Sprite{
         
         
         Array<TextureRegion> frames = new Array<TextureRegion>();
-        for (int i = 6; i < 10; i++){
-            if(i == 8) {
-                frames.add(new TextureRegion(getTexture(), (i * 40) + 14,0,40,105));
-            }
-            if(i == 7) {
-                frames.add(new TextureRegion(getTexture(), (i * 40) + 9,0,40,105));
-            }
-            if(i == 6) {
-                frames.add(new TextureRegion(getTexture(), (i * 40) + 1,0,40,105));
-            }
+        for (int i = 0; i < 4; i++){
+            frames.add(new TextureRegion(getTexture(), i*32+2,65,32,60));
         }
         
         playeRunRight = new Animation(0.1f, frames);
         frames.clear();
         
-        for (int i = 12; i < 16; i++){
-            frames.add(new TextureRegion(getTexture(), (i * 40),0,40,105));
+        for (int i = 0; i < 4; i++){
+            if(i==0) {
+                frames.add(new TextureRegion(getTexture(), i*30+136,65,30,60));
+            } else {
+                frames.add(new TextureRegion(getTexture(), i*30+(136+i*2),65,30,60));
+            }
         }
         
-        playeRunLeft = new Animation(0.1f, frames);
+        playerStanding = new Animation(0.1f, frames);
         frames.clear();
         
-        for (int i = 0; i < 4; i++){
-            frames.add(new TextureRegion(getTexture(), (i * 32),140,40,105));
-        }
-        playerStanding = new Animation(0.1f, frames);
         
         defineRobot();
         
-        playerStand = new TextureRegion(getTexture(), 0,140,40,105);
+        playerStand = new TextureRegion(getTexture(), 166,65,32,60);
         setBounds(0, 0, 16/Horror.PPM, 16/Horror.PPM);
         setRegion(playerStand);
     }
     
     public void defineRobot(){
         BodyDef bdef = new BodyDef();
-        bdef.position.set(32/Horror.PPM,32/Horror.PPM);
+        bdef.position.set(32/Horror.PPM,64/Horror.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
         
@@ -95,8 +88,10 @@ public class Robot extends Sprite{
         fdef.filter.categoryBits = Horror.ROBOT_BIT;
         
         fdef.filter.maskBits = Horror.GROUND_BIT | 
-                Horror.ENEMY_BIT |
-                Horror.OBJECT_BIT;
+                Horror.HOLE_BIT |
+                Horror.HUMAN_BIT |
+                Horror.OBJECT_BIT |
+                Horror.SKY_BIT;
         
         
         
@@ -135,7 +130,7 @@ public class Robot extends Sprite{
             case FALLING:
             case STANDING:
             default:
-                region = playerStand;
+                region = (TextureRegion) playerStanding.getKeyFrame(stateTimer, true);
                 break;
         }
         
@@ -165,5 +160,11 @@ public class Robot extends Sprite{
             return State.RUNNING;
         } else
             return State.STANDING;
+    }
+    
+    public void fall(){
+        //defineRobot();
+        Hud.addLives(-1);
+        Hud.addScore(0);
     }
 }

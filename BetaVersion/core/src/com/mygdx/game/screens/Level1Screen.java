@@ -75,7 +75,7 @@ public class Level1Screen extends DefaultScreen{
         super(_game);
         
         //sprites
-        atlas = new TextureAtlas("player_and_enemy.pack");
+        atlas = new TextureAtlas("assets.pack");
         
         batch = new SpriteBatch();
         //Keep the screen constant for the game
@@ -86,7 +86,7 @@ public class Level1Screen extends DefaultScreen{
         hud = new Hud(batch);
         
         maploader = new TmxMapLoader();
-        map = maploader.load("level1.tmx");
+        map = maploader.load("Map/level1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1/Horror.PPM);
         
         gamecam.position.set(gameport.getWorldWidth()/2, 
@@ -121,14 +121,24 @@ public class Level1Screen extends DefaultScreen{
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             player.b2body.applyLinearImpulse(new Vector2(0,2f), 
                     player.b2body.getWorldCenter(), true);
+            human.b2body.applyLinearImpulse(new Vector2(0,2f), 
+                    human.b2body.getWorldCenter(), true);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.D) && (player.b2body.getLinearVelocity().x <= 1.2)) {
             player.b2body.applyLinearImpulse(new Vector2(0.1f,0), 
                     player.b2body.getWorldCenter(), true);
+            if(human.getX() < player.getX()){
+                human.b2body.applyLinearImpulse(new Vector2(0.1f,0), 
+                       human.b2body.getWorldCenter(), true);
+            }
         }
         if(Gdx.input.isKeyPressed(Input.Keys.A) && (player.b2body.getLinearVelocity().x >= -1.2)) {
             player.b2body.applyLinearImpulse(new Vector2(-0.1f,0), 
                     player.b2body.getWorldCenter(), true);
+            if(human.getX() < player.getX() && human.getX() > player.getX()-32/Horror.PPM){
+                human.b2body.applyLinearImpulse(new Vector2(-0.1f,0), 
+                        human.b2body.getWorldCenter(), true);
+            }
         }
         
         
@@ -140,6 +150,7 @@ public class Level1Screen extends DefaultScreen{
         world.step(1/60f, 6, 2);
         
         player.update(delta);
+        human.update(delta);
         hud.update(delta);
         
         for(EnemyStandard enemy : creator.getGhosts()){
@@ -163,13 +174,14 @@ public class Level1Screen extends DefaultScreen{
         //render the map of the game
         renderer.render();
         
-        //render the box2d object
-        b2dr.render(world, gamecam.combined);
+        //render the box2d debug object
+        //b2dr.render(world, gamecam.combined);
         
         //draw player
         batch.setProjectionMatrix(gamecam.combined);
         batch.begin();
         player.draw(batch);
+        human.draw(batch);
         for(EnemyStandard enemy : creator.getGhosts()){
             enemy.draw(batch);
         }
