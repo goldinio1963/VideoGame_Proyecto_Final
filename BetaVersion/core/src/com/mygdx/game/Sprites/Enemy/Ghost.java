@@ -35,14 +35,14 @@ public class Ghost extends EnemyStandard{
         destroy = false;
         
         frames = new Array<TextureRegion>();
-        for(int i=0; i <4 ; i++){
-            frames.add(new TextureRegion(screen.getalAtlas().findRegion("ghost")
-                    , i*27,0,27,50));
+        for(int i=1; i <4 ; i++){
+            frames.add(new TextureRegion(screen.getalAtlas().findRegion("robot")
+                    , i*32,0,32,64));
         }
         walk = new Animation(0.4f, frames);
         stateTime=0;
         
-        setBounds(getX(), getY(), 16/Horror.PPM, 16/Horror.PPM);
+        setBounds(getX(), getY(), 16/Horror.PPM, 32/Horror.PPM);
     }
     
     public void update(float delta){

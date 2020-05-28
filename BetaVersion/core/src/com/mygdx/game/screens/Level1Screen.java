@@ -25,12 +25,15 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Horror;
 import com.mygdx.game.Scenes.Hud;
 import com.mygdx.game.Sprites.Ally.Human;
+import com.mygdx.game.Sprites.Bullet;
 import com.mygdx.game.Sprites.Enemy.EnemyStandard;
 import com.mygdx.game.Sprites.Enemy.Ghost;
 import com.mygdx.game.Sprites.Robot;
 import com.mygdx.game.Tools.B2WorldCreator;
 import com.mygdx.game.Tools.WorldContactListener;
 import com.mygdx.game.graph.Background;
+
+import java.util.ArrayList;
 
 /**
  *
@@ -43,13 +46,15 @@ public class Level1Screen extends DefaultScreen{
     
     //public static final int SCREEN_W = 12 * Resources.TILE_SIZE;
     //public static final int SCREEN_H = 8 * Resources.TILE_SIZE;
-    
+
+    //Basic playscreen variables
     private Stage gameSatge;
     private OrthographicCamera gamecam;
     private Background bg;
     private Viewport gameport;
     private Hud hud;
-    
+
+    //Tiled map variables
     private TmxMapLoader maploader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -65,6 +70,11 @@ public class Level1Screen extends DefaultScreen{
     
     //ally
     private Human human;
+
+    // Bullets array
+    ArrayList<Bullet> bullets;
+    Level1Screen screen;
+    private int bulletsCount;
     
     //enemies
     
@@ -75,31 +85,41 @@ public class Level1Screen extends DefaultScreen{
         super(_game);
         
         //sprites
-        atlas = new TextureAtlas("assets.pack");
+        atlas = new TextureAtlas("human_robot.pack");
         
         batch = new SpriteBatch();
         //Keep the screen constant for the game
         //ExtendViewport viewport = new ExtendViewport(SCREEN_W, SCREEN_H);
         gamecam = new OrthographicCamera();
+
+        //create a FitViewport to maintain virtual aspect ratio despite screen size
         gameport = new FitViewport(Horror.V_WIDTH/Horror.PPM
                 , Horror.V_HEIGHT/Horror.PPM, gamecam);
-        hud = new Hud(batch);
         
+        //create our game HUD for scores/timers/level info
+        hud = new Hud(batch);
+
+        //Load out map and setup our map renderer
         maploader = new TmxMapLoader();
         map = maploader.load("Map/level1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1/Horror.PPM);
-        
+
+        //Initially set our game cam to be c entered correctly at the start of our game
         gamecam.position.set(gameport.getWorldWidth()/2, 
                 gameport.getWorldHeight()/2, 0);
         
-        //box2d
+        //Creates world
         world = new World(new Vector2(0, -9.18f), true);
         b2dr = new Box2DDebugRenderer();
         
         creator = new B2WorldCreator(this);
-        
-        player = new Robot(this);
+
+        //Creates player in world
+        player = new Robot(world,this);
         human = new Human(this);
+        this.screen = this;
+        //Creates bullets array
+        bullets = new ArrayList<Bullet>();
         //create a window to handle all the ui elements
         //gameSatge = new Stage(gameport, batch);
         //bg = new Background();
@@ -118,13 +138,13 @@ public class Level1Screen extends DefaultScreen{
     }
     
     public void handleInput(float delta) {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            player.b2body.applyLinearImpulse(new Vector2(0,2f), 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            player.b2body.applyLinearImpulse(new Vector2(0,3f),
                     player.b2body.getWorldCenter(), true);
-            human.b2body.applyLinearImpulse(new Vector2(0,2f), 
+            human.b2body.applyLinearImpulse(new Vector2(0,3f),
                     human.b2body.getWorldCenter(), true);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.D) && (player.b2body.getLinearVelocity().x <= 1.2)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D) && (player.b2body.getLinearVelocity().x <= 1.2)) {
             player.b2body.applyLinearImpulse(new Vector2(0.1f,0), 
                     player.b2body.getWorldCenter(), true);
             if(human.getX() < player.getX()){
@@ -132,7 +152,7 @@ public class Level1Screen extends DefaultScreen{
                        human.b2body.getWorldCenter(), true);
             }
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.A) && (player.b2body.getLinearVelocity().x >= -1.2)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A) && (player.b2body.getLinearVelocity().x >= -1.2)) {
             player.b2body.applyLinearImpulse(new Vector2(-0.1f,0), 
                     player.b2body.getWorldCenter(), true);
             if(human.getX() < player.getX() && human.getX() > player.getX()-32/Horror.PPM){
@@ -140,34 +160,76 @@ public class Level1Screen extends DefaultScreen{
                         human.b2body.getWorldCenter(), true);
             }
         }
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            // Checks if bullets available
+            if (hud.getBulletsCount() > 0) {
+                // Check direction of robot moving
+                if (player.getRunning()) {
+                    bullets.add(new Bullet(world, screen, player, player.b2body.getPosition().x + (35 / Horror.PPM), player.b2body.getPosition().y));
+                } else {
+                    bullets.add(new Bullet(world, screen, player,
+                            player.b2body.getPosition().x - (35 / Horror.PPM), player.b2body.getPosition().y));
+                }
+                // Updates bullet count
+                hud.setBulletsCount(hud.getBulletsCount() - 1);
+            }
+        }
         
         
     }
     
     public void update(float delta) {
+        //handel user input 
         handleInput(delta);
         
         world.step(1/60f, 6, 2);
-        
+
+        //Update player, human and hud
         player.update(delta);
         human.update(delta);
         hud.update(delta);
         
-        for(EnemyStandard enemy : creator.getGhosts()){
+        //update enemies
+        for (EnemyStandard enemy : creator.getGhosts()){
             enemy.update(delta);
         }
+
+        // Update bullet
+        ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
+        for (Bullet bullet : bullets) {
+            // Checks direction of bullet and add force
+            if (bullet.getRight()) {
+                bullet.b2body.applyForce(new Vector2(3, -(-10)), new Vector2(bullet.b2body.getWorldCenter()), true);
+            } else {
+                bullet.b2body.applyForce(new Vector2(-3, -(-10)), new Vector2(bullet.b2body.getWorldCenter()), true);
+            }
+
+            bullet.update(delta);
+            // If bullet collision with wall or enemy add to bulletsToRemoveArray
+            // if (collision) {
+            // bulletsToRemove.add(bullet);
+            // }
+        }
+
+        // Removes bullets in bulletsToRemoveArray
+        bullets.removeAll(bulletsToRemove);
         
-        
+        //Move position of camera depending of main player
         gamecam.position.x = player.b2body.getPosition().x;
-        
+
+        //update our game cam with correct coordinates
         gamecam.update();
+
+        //tell our renderer to draw only what out camera can see in our game world.
         renderer.setView(gamecam);
     }
     
     @Override
     public void render (float delta){
+        //separate out update logic from render
         update(delta);
-        
+
+        //Clear the game screen with black
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
@@ -185,6 +247,9 @@ public class Level1Screen extends DefaultScreen{
         for(EnemyStandard enemy : creator.getGhosts()){
             enemy.draw(batch);
         }
+        for (Bullet bullet : bullets) {
+            bullet.draw(batch);
+        }
         batch.end();
         
         //draw hud of the game
@@ -195,13 +260,14 @@ public class Level1Screen extends DefaultScreen{
         //gameSatge.draw();
     }
     
+    //update screen gameport when screen resizes
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
         gameport.update(width, height);
     }
     
-    
+    //Dispose variables 
     @Override
     public void dispose(){
         super.dispose();
