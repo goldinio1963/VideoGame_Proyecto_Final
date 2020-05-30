@@ -85,7 +85,7 @@ public class Level1Screen extends DefaultScreen{
         super(_game);
         
         //sprites
-        atlas = new TextureAtlas("human_robot.pack");
+        atlas = new TextureAtlas("human_robot_pack.pack");
         
         batch = new SpriteBatch();
         //Keep the screen constant for the game

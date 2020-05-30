@@ -29,9 +29,9 @@ public class Ghost extends EnemyStandard{
         super(screen, x, y);
         
         frames = new Array<TextureRegion>();
-        for(int i=1; i <4; i++){
+        for(int i=5; i < 11; i++){
             frames.add(new TextureRegion(screen.getalAtlas().findRegion("robot")
-                    , i*32,131,32,64));
+                    , i*32,195,32,64));
         }
         walk = new Animation(0.4f, frames);
         stateTime=0;
