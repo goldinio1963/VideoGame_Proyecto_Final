@@ -65,6 +65,8 @@ public class Bullet extends Sprite {
     public boolean getRight() {
         return goingRight;
     }
+    
+    
 
     public void defineBullet() {
         BodyDef bdef = new BodyDef();
@@ -85,6 +87,12 @@ public class Bullet extends Sprite {
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
     }
+
+    public boolean isDestroy() {
+        return destroy;
+    }
+    
+    
     
     @Override
     public void draw(Batch batch){

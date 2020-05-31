@@ -149,10 +149,13 @@ public class Level1Screen extends DefaultScreen{
             if (hud.getBulletsCount() > 0) {
                 // Check direction of robot moving
                 if (player.isRunningRight()) {
-                    bullets.add(new Bullet(this, player, player.b2body.getPosition().x, player.b2body.getPosition().y+player.getHeight()/2));
+                    bullets.add(new Bullet(this, player, 
+                            player.b2body.getPosition().x + (16/Horror.PPM), 
+                            player.b2body.getPosition().y));
                 } else {
                     bullets.add(new Bullet(this, player,
-                            player.b2body.getPosition().x - (35 / Horror.PPM), player.b2body.getPosition().y));
+                            player.b2body.getPosition().x - (16 / Horror.PPM), 
+                            player.b2body.getPosition().y));
                 }
                 // Updates bullet count
                 hud.setBulletsCount(hud.getBulletsCount() - 1);
@@ -179,12 +182,13 @@ public class Level1Screen extends DefaultScreen{
         ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
         for (Bullet bullet : bullets) {
             // Checks direction of bullet and add force
-            if (bullet.getRight()) {
-                bullet.b2body.applyForce(new Vector2(3, -(-9.4f)), new Vector2(bullet.b2body.getWorldCenter()), true);
-            } else {
-                bullet.b2body.applyForce(new Vector2(-3, -(-9.4f)), new Vector2(bullet.b2body.getWorldCenter()), true);
+            if(!bullet.isDestroy()){
+                if (bullet.getRight()) {
+                    bullet.b2body.applyForce(new Vector2(3, -(-9.18f)), new Vector2(bullet.b2body.getWorldCenter()), true);
+                } else {
+                    bullet.b2body.applyForce(new Vector2(-3, -(-9.18f)), new Vector2(bullet.b2body.getWorldCenter()), true);
+                }
             }
-
             bullet.update(delta);
             // If bullet collision with wall or enemy add to bulletsToRemoveArray
             // if (collision) {
