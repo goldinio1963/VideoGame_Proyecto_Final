@@ -31,7 +31,7 @@ public class Human extends Sprite{
     public Body b2body;
     private Robot player;
     private float stateTime;
-    private Animation<TextureRegion> humanWalking;
+    private Animation humanWalking;
     private Array<TextureRegion> frames;
     public enum State { FALLING, JUMPING, STANDING, RUNNING};
     public State currentState;
@@ -50,18 +50,18 @@ public class Human extends Sprite{
         
         
         frames = new Array<TextureRegion>();
-        for(int i=1; i < 3; i++){
-            frames.add(new TextureRegion(screen.getalAtlas().findRegion("Human")
+        for(int i=0; i <3; i++){
+            frames.add(new TextureRegion(screen.getalAtlas().findRegion("human")
                     , i*32,0,32,64));
         }
         humanWalking = new Animation(0.4f, frames);
         stateTime = 0;
         
-        humanStand = new TextureRegion(screen.getalAtlas().findRegion("Human")
+        humanStand = new TextureRegion(screen.getalAtlas().findRegion("human")
                     ,32,0,32,64);
         setRegion(humanStand);
         
-        setBounds(getX(), getY(), 16/Horror.PPM, 32/Horror.PPM);
+        setBounds(getX(), getY(), 16/Horror.PPM, 16/Horror.PPM);
 
         defineHuman();
     }
@@ -83,7 +83,7 @@ public class Human extends Sprite{
         
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(14 / Horror.PPM);
+        shape.setRadius(6 / Horror.PPM);
         fdef.filter.categoryBits = Horror.HUMAN_BIT;
         fdef.filter.maskBits = Horror.GROUND_BIT | 
                 Horror.ROBOT_BIT |
@@ -107,7 +107,7 @@ public class Human extends Sprite{
                 break;
             
             case RUNNING:
-                region = humanWalking.getKeyFrame(stateTimer, true);
+                region = (TextureRegion) humanWalking.getKeyFrame(stateTimer, true);
                 break;
                 
             case FALLING:

@@ -24,54 +24,63 @@ import com.mygdx.game.screens.Level1Screen;
  *
  * @author Adolfo
  */
-public class Robot extends Sprite {
+public class Robot extends Sprite{
     public World world;
     public Body b2body;
     private TextureRegion playerStand;
     public enum State { FALLING, JUMPING, STANDING, RUNNING};
     public State currentState;
     public State previousState;
-    private Animation<TextureRegion> playeRunRight;
-    private Animation<TextureRegion> playeRunLeft;
-    private Animation<TextureRegion> playerStanding;
+    private Animation playeRunRight;
+    private Animation playeRunLeft;
+    private Animation playerStanding;
     private float stateTimer;
-    private boolean runningRight; 
+    private boolean runningRight, fall; 
     public float shootDelay = 0.5f;
     public float timeSinceLastShot = 0f;
     
     
-    public Robot (World world, Level1Screen screen) {
-        super(screen.getalAtlas().findRegion("robot"));
-        this.world = world;
+    public Robot (Level1Screen screen) {
+        super(screen.getalAtlas().findRegion("player"));
+        this.world = screen.getWorld();
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
         runningRight = true;
-
-        //Array for storing frames
+        
+        
         Array<TextureRegion> frames = new Array<TextureRegion>();
-
-        //Loop to get robot running frames
-        for (int i = 4; i < 8; i++){
-            frames.add(new TextureRegion(getTexture(), i * 32, 131, 32, 64));
+        for (int i = 0; i < 4; i++){
+            frames.add(new TextureRegion(getTexture(), i*32+2,40,32,60));
         }
-        playeRunRight = new Animation<TextureRegion>(0.1f, frames);
+        
+        playeRunRight = new Animation(0.1f, frames);
         frames.clear();
-
-        //Loop to get robot standing frames
-        for (int i = 1; i < 4; i++){
-            frames.add(new TextureRegion(getTexture(), i * 32, 195, 32, 64));
+        
+        for (int i = 0; i < 4; i++){
+            if(i==0) {
+                frames.add(new TextureRegion(getTexture(), i*30+136,40,30,60));
+            } else {
+                frames.add(new TextureRegion(getTexture(), i*30+(136+i*2),40,30,60));
+            }
         }
-        playerStanding = new Animation<TextureRegion>(0.1f, frames);
+        
+        playerStanding = new Animation(0.1f, frames);
         frames.clear();
-
-
+        
+        
         defineRobot();
         
-//        playerStand = new TextureRegion(getTexture(), 166,65,32,60);
-        setBounds(0, 0, 16/Horror.PPM, 32/Horror.PPM);
-//        setRegion(playerStand);
+        playerStand = new TextureRegion(getTexture(), 166,40,32,60);
+        setBounds(0, 0, 16/Horror.PPM, 16/Horror.PPM);
+        setRegion(playerStand);
     }
+
+    public boolean isRunningRight() {
+        return runningRight;
+    }
+    
+    
     
     public void defineRobot(){
         BodyDef bdef = new BodyDef();
@@ -81,9 +90,9 @@ public class Robot extends Sprite {
         
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(14 / Horror.PPM);
-
+        shape.setRadius(6 / Horror.PPM);
         fdef.filter.categoryBits = Horror.ROBOT_BIT;
+        
         fdef.filter.maskBits = Horror.GROUND_BIT | 
                 Horror.HOLE_BIT |
                 Horror.HUMAN_BIT |
@@ -93,7 +102,7 @@ public class Robot extends Sprite {
         
         
         fdef.shape = shape;
-        b2body.createFixture(fdef);
+        b2body.createFixture(fdef).setUserData(this);;
         
         EdgeShape head = new EdgeShape();
         head.set(new Vector2(-2/Horror.PPM,6/Horror.PPM), 
@@ -117,26 +126,25 @@ public class Robot extends Sprite {
         TextureRegion region;
         switch(currentState){
             case JUMPING:
-                region = playerStanding.getKeyFrame(stateTimer);
+                region = playerStand;
                 break;
             
             case RUNNING:
-                region = playeRunRight.getKeyFrame(stateTimer, true);
+                region = (TextureRegion) playeRunRight.getKeyFrame(stateTimer, true);
                 break;
+                
             case FALLING:
             case STANDING:
-                region = playerStanding.getKeyFrame(stateTimer, true);
-                break;
             default:
-                region = playerStanding.getKeyFrame(stateTimer, true);
+                region = (TextureRegion) playerStanding.getKeyFrame(stateTimer, true);
                 break;
         }
         
-        if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()){
+        if((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()){
             region.flip(true, false);
             runningRight = false;
         }
-        else if ((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()) {
+        else if((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()) {
             region.flip(true, false);
             runningRight = true;
         }
@@ -147,7 +155,7 @@ public class Robot extends Sprite {
     }
     
     public State getState() {
-        if (b2body.getLinearVelocity().y > 0 ||
+        if(b2body.getLinearVelocity().y > 0 || 
                 (b2body.getLinearVelocity().y < 0 && previousState == 
                 State.JUMPING)) {
             return State.JUMPING;
@@ -159,13 +167,10 @@ public class Robot extends Sprite {
         } else
             return State.STANDING;
     }
-
-    public boolean getRunning() {
-        return runningRight;
-    }
     
     public void fall(){
         //defineRobot();
+        setPosition(32/Horror.PPM, 64/Horror.PPM);
         Hud.addLives(-1);
         Hud.addScore(0);
     }

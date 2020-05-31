@@ -46,5 +46,7 @@ public abstract class EnemyStandard extends Sprite{
         }
     }
     
+    public abstract void hitBullet();
+    
     public abstract void hitHuman();
 }

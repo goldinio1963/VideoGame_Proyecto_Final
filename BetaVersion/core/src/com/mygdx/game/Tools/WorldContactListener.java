@@ -14,6 +14,7 @@ import com.mygdx.game.Horror;
 import com.mygdx.game.Scenes.Hud;
 import com.mygdx.game.Sprites.Ally.Human;
 import com.mygdx.game.Sprites.Enemy.EnemyStandard;
+import com.mygdx.game.Sprites.Misc.Bullet;
 import com.mygdx.game.Sprites.Robot;
 import com.mygdx.game.screens.Level1Screen;
 
@@ -59,6 +60,31 @@ public class WorldContactListener implements ContactListener {
                 } else {
                     ((Human)fixB.getUserData()).fall();
                 }
+                break;
+            case Horror.ROBOT_BIT | Horror.HOLE_BIT:
+                if(fixA.getFilterData().categoryBits == Horror.ROBOT_BIT){
+                    ((Robot)fixA.getUserData()).fall();
+                } else {
+                    ((Robot)fixB.getUserData()).fall();
+                }
+                break;
+            
+            case Horror.BULLET_BIT | Horror.ENEMY_BIT:
+                if(fixA.getFilterData().categoryBits == Horror.BULLET_BIT){
+                    ((Bullet)fixA.getUserData()).hit();
+                    ((EnemyStandard)fixB.getUserData()).hitBullet();
+                } else {
+                    ((EnemyStandard)fixA.getUserData()).hitBullet();
+                    ((Bullet)fixB.getUserData()).hit();
+                }
+                break;
+            case Horror.BULLET_BIT | Horror.EDGE_BIT:
+            case Horror.BULLET_BIT | Horror.OBJECT_BIT:
+            case Horror.BULLET_BIT | Horror.SKY_BIT:
+                if(fixA.getFilterData().categoryBits == Horror.ENEMY_BIT)
+                    ((Bullet)fixA.getUserData()).hit();
+                else
+                    ((Bullet)fixB.getUserData()).hit();
                 break;
             
         }

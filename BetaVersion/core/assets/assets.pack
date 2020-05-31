@@ -5,22 +5,29 @@ filter: Nearest,Nearest
 repeat: none
 player
   rotate: false
-  xy: 0, 66
+  xy: 1, 42
   size: 264, 60
   orig: 512, 64
   offset: 0, 4
   index: -1
+virus
+  rotate: false
+  xy: 1, 14
+  size: 178, 26
+  orig: 256, 32
+  offset: 2, 6
+  index: -1
 human
   rotate: false
-  xy: 0, 0
+  xy: 267, 36
   size: 99, 66
   orig: 128, 128
   offset: 0, 62
   index: -1
-ghost
+bullet
   rotate: false
-  xy: 264, 77
-  size: 108, 49
-  orig: 128, 64
-  offset: 0, 15
+  xy: 1, 1
+  size: 36, 11
+  orig: 64, 16
+  offset: 0, 3
   index: -1
