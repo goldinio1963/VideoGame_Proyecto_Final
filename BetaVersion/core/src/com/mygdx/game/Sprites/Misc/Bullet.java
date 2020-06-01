@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Horror;
 import com.mygdx.game.Sprites.Enemy.EnemyStandard;
 import com.mygdx.game.Sprites.Robot;
+import com.mygdx.game.screens.DefaultScreen;
 import com.mygdx.game.screens.Level1Screen;
 
 public class Bullet extends Sprite {
@@ -31,7 +32,7 @@ public class Bullet extends Sprite {
     private boolean destroy;
     private EnemyStandard enemy;
 
-    public Bullet(Level1Screen screen, Robot robot, float x, float y) {
+    public Bullet(DefaultScreen screen, Robot robot, float x, float y) {
         super(screen.getalAtlas().findRegion("bullet"));
         this.world = screen.getWorld();
         this.x = x;

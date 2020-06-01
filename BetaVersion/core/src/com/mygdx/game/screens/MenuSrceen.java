@@ -107,17 +107,17 @@ public class MenuSrceen extends DefaultScreen{
         });
 
         //Add buttons to table
-        mainTable.add(playButton);
+        mainTable.add(playButton).pad(5);
         mainTable.row();
-        mainTable.add(loadButton);
+        mainTable.add(loadButton).pad(5);
         mainTable.row();
-        mainTable.add(scoreButton);
+        mainTable.add(scoreButton).pad(5);
         mainTable.row();
-        mainTable.add(optionsButton);
+        //mainTable.add(optionsButton);
+        //mainTable.row();
+        mainTable.add(creditsButton).pad(5);
         mainTable.row();
-        mainTable.add(creditsButton);
-        mainTable.row();
-        mainTable.add(exitButton);
+        mainTable.add(exitButton).pad(5);
         
         stage.addActor(mainTable);
     }

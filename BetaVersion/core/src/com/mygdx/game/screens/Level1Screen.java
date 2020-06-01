@@ -51,17 +51,16 @@ public class Level1Screen extends DefaultScreen{
     private Hud hud;
     
     private TmxMapLoader maploader;
-    private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
             
     
     //Box2d world
-    private World world;
     private Box2DDebugRenderer b2dr;
     private B2WorldCreator creator;
     
     //Player
     private Robot player;
+    private int jumptimes;
     
     //ally
     private Human human;
@@ -70,8 +69,6 @@ public class Level1Screen extends DefaultScreen{
     ArrayList<Bullet> bullets;
     private int bulletsCount;
     
-    //Sprites
-    private TextureAtlas atlas;
     
     public Level1Screen(Horror game) {
         super(game);
@@ -101,6 +98,7 @@ public class Level1Screen extends DefaultScreen{
         creator = new B2WorldCreator(this);
         
         player = new Robot(this);
+        jumptimes = 0;
         human = new Human(this);
         
         bullets = new ArrayList<Bullet>();
@@ -117,16 +115,17 @@ public class Level1Screen extends DefaultScreen{
     public World getWorld() {
         return world;
     }
+    @Override
     public TextureAtlas getalAtlas() {
         return atlas;
     }
     
     public void handleInput(float delta) {
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            player.b2body.applyLinearImpulse(new Vector2(0,2f), 
-                    player.b2body.getWorldCenter(), true);
-            human.b2body.applyLinearImpulse(new Vector2(0,2f), 
-                    human.b2body.getWorldCenter(), true);
+                    player.b2body.applyLinearImpulse(new Vector2(0,2f), 
+                        player.b2body.getWorldCenter(), true);
+                    human.b2body.applyLinearImpulse(new Vector2(0,2f), 
+                            human.b2body.getWorldCenter(), true);                            
         }
         if(Gdx.input.isKeyPressed(Input.Keys.D) && (player.b2body.getLinearVelocity().x <= 1.2)) {
             player.b2body.applyLinearImpulse(new Vector2(0.1f,0), 

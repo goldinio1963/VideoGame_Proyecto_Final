@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Horror;
+import com.mygdx.game.screens.DefaultScreen;
 import com.mygdx.game.screens.Level1Screen;
 
 /**
@@ -29,7 +30,7 @@ public class Ghost extends EnemyStandard{
     private boolean setToDestroy;
     private boolean destroy;
 
-    public Ghost(Level1Screen screen, float x, float y) {
+    public Ghost(DefaultScreen screen, float x, float y) {
         super(screen, x, y);
         setToDestroy = false;
         destroy = false;

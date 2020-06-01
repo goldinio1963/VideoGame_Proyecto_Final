@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="240" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="156">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="240" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="171">
  <tileset firstgid="1" name="BG1tiles" tilewidth="16" tileheight="16" tilecount="240" columns="20">
   <image source="png/BG1tiles.png" width="320" height="192"/>
  </tileset>
@@ -159,5 +159,24 @@
   <object id="153" x="1423.25" y="191.875" width="33.25" height="16.75"/>
   <object id="154" x="2160.64" y="191.818" width="30.6364" height="16.1818"/>
   <object id="155" x="2480" y="192" width="32.0909" height="15.9091"/>
+ </objectgroup>
+ <objectgroup id="11" name="mask">
+  <object id="156" x="1229.67" y="98.6667"/>
+  <object id="157" x="985.333" y="99.3333"/>
+  <object id="158" x="741" y="148.667"/>
+  <object id="159" x="182.667" y="100"/>
+  <object id="160" x="2074" y="163"/>
+  <object id="161" x="2610.67" y="83.3333"/>
+  <object id="162" x="2634.33" y="83"/>
+  <object id="163" x="3222" y="82.3333"/>
+ </objectgroup>
+ <objectgroup id="12" name="ammo">
+  <object id="164" x="3258.67" y="162.667"/>
+  <object id="165" x="3385" y="52"/>
+  <object id="166" x="2425" y="101"/>
+  <object id="167" x="2005.33" y="100.667"/>
+  <object id="168" x="1377" y="162.667"/>
+  <object id="169" x="853" y="164"/>
+  <object id="170" x="133.333" y="132.667"/>
  </objectgroup>
 </map>

@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Horror;
 import com.mygdx.game.Sprites.Enemy.Ghost;
+import com.mygdx.game.screens.DefaultScreen;
 import com.mygdx.game.screens.Level1Screen;
 
 /**
@@ -26,7 +27,7 @@ import com.mygdx.game.screens.Level1Screen;
 public class B2WorldCreator {
     private Array<Ghost> ghosts;
    
-    public B2WorldCreator (Level1Screen screen) {
+    public B2WorldCreator (DefaultScreen screen) {
         World world = screen.getWorld();
         TiledMap map = screen.getMap();
         BodyDef bdef = new BodyDef();

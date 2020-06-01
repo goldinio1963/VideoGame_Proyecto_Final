@@ -6,6 +6,9 @@
 package com.mygdx.game.screens;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Horror;
 
 /**
@@ -15,9 +18,24 @@ import com.mygdx.game.Horror;
 public class DefaultScreen implements Screen{
     
     protected Horror game;
+    protected World world;
+    protected TextureAtlas atlas;
+    protected TiledMap map;
 
     DefaultScreen (Horror game) {
         this.game = game;
+        
+    }
+    
+    public TiledMap getMap() {
+        return map;
+    }
+    
+    public World getWorld() {
+        return world;
+    }
+    public TextureAtlas getalAtlas() {
+        return atlas;
     }
     
     @Override

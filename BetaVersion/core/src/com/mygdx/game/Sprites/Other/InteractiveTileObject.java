@@ -5,6 +5,8 @@
  */
 package com.mygdx.game.Sprites.Other;
 
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
@@ -16,6 +18,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Horror;
+import com.mygdx.game.Sprites.Robot;
+import com.mygdx.game.screens.DefaultScreen;
 
 /**
  *
@@ -25,16 +29,19 @@ public abstract class InteractiveTileObject {
 
     protected World world;
     protected TiledMap map;
-    protected TiledMap tile;
     protected Rectangle bounds;
     protected Body body;
-    
+    protected DefaultScreen screen;
+    protected MapObject object;
+
     protected Fixture fixture;
 
-    public InteractiveTileObject(World world, TiledMap map, Rectangle bounds) {
-        this.world = world;
-        this.map = map;
-        this.bounds = bounds;
+    public InteractiveTileObject(DefaultScreen screen, MapObject object) {
+        this.object = object;
+        this.screen = screen;
+        this.world = screen.getWorld();
+        this.map = screen.getMap();
+        this.bounds = ((RectangleMapObject) object).getRectangle();
 
         BodyDef bdef = new BodyDef();
         FixtureDef fdef = new FixtureDef();
@@ -55,6 +62,8 @@ public abstract class InteractiveTileObject {
         fixture = body.createFixture(fdef);
 
     }
+    
+    public abstract void hit(Robot player);
     
     public void setCategoryFilter(short filterBit){
         Filter filter = new Filter();

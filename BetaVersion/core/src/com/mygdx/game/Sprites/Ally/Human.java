@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Horror;
 import com.mygdx.game.Scenes.Hud;
 import com.mygdx.game.Sprites.Robot;
+import com.mygdx.game.screens.DefaultScreen;
 import com.mygdx.game.screens.Level1Screen;
 
 
@@ -41,7 +42,7 @@ public class Human extends Sprite{
     private TextureRegion humanStand;
     
     
-    public Human(Level1Screen screen){
+    public Human(DefaultScreen screen){
         this.world = screen.getWorld();
         currentState = State.STANDING;
         previousState = State.STANDING;

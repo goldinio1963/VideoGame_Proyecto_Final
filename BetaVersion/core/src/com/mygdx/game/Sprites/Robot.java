@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Horror;
 import com.mygdx.game.Scenes.Hud;
+import com.mygdx.game.screens.DefaultScreen;
 import com.mygdx.game.screens.Level1Screen;
 
 /**
@@ -40,7 +41,7 @@ public class Robot extends Sprite{
     public float timeSinceLastShot = 0f;
     
     
-    public Robot (Level1Screen screen) {
+    public Robot (DefaultScreen screen) {
         super(screen.getalAtlas().findRegion("player"));
         this.world = screen.getWorld();
         currentState = State.STANDING;

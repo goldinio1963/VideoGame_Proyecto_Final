@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.game.screens.DefaultScreen;
 import com.mygdx.game.screens.Level1Screen;
 
 /**
@@ -18,13 +19,13 @@ import com.mygdx.game.screens.Level1Screen;
 public abstract class EnemyStandard extends Sprite{
     
     protected World world;
-    protected Level1Screen screen;
+    protected DefaultScreen screen;
     
     public Body b2body;
     
     public Vector2 velocity;
     
-    public EnemyStandard(Level1Screen screen, float x, float y){
+    public EnemyStandard(DefaultScreen screen, float x, float y){
         this.world = screen.getWorld();
         this.screen = screen;
         setPosition(x,y);

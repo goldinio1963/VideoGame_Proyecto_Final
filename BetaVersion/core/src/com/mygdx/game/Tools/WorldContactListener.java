@@ -16,6 +16,7 @@ import com.mygdx.game.Sprites.Ally.Human;
 import com.mygdx.game.Sprites.Enemy.EnemyStandard;
 import com.mygdx.game.Sprites.Misc.Bullet;
 import com.mygdx.game.Sprites.Robot;
+import com.mygdx.game.screens.DefaultScreen;
 import com.mygdx.game.screens.Level1Screen;
 
 /**
@@ -25,7 +26,7 @@ import com.mygdx.game.screens.Level1Screen;
 public class WorldContactListener implements ContactListener {
 
     
-    private Level1Screen level;
+    private DefaultScreen level;
     @Override
     public void beginContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();

@@ -32,7 +32,7 @@ public class GameOverScreen extends DefaultScreen{
     private Viewport viewport;
     private Stage stage;
     private TextureAtlas atlas;
-    protected Skin skin;
+    private Skin skin;
     
     public GameOverScreen(Horror game) {
         super(game);
@@ -41,7 +41,6 @@ public class GameOverScreen extends DefaultScreen{
         atlas = new TextureAtlas("skin/uiskin.atlas");
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"), atlas);
         
-        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
     }
     
     
@@ -50,14 +49,24 @@ public class GameOverScreen extends DefaultScreen{
         //Stage should controll input:
         Gdx.input.setInputProcessor(stage);
         
+        //create the label font
+        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        
          //Create Table
-        Table mainTable = new Table();
+        Table table = new Table();
         //Set table to fill stage
-        mainTable.setFillParent(true);
+        table.setFillParent(true);
         //Set alignment of contents in the table.
-        mainTable.center();
+        table.center();
         
-        
+        Label gameOverLabel = new Label("GAME OVER", font);
+        Label playAgainLabel = new Label("Click to Play Again", font);
+
+        table.add(gameOverLabel).expandX();
+        table.row();
+        table.add(playAgainLabel).expandX().padTop(10f);
+
+        stage.addActor(table);
         
     }
 
@@ -68,6 +77,12 @@ public class GameOverScreen extends DefaultScreen{
     
     @Override
     public void dispose(){
-        
+        if(Gdx.input.justTouched()) {
+            game.setScreen(new Level1Screen((Horror) game));
+            dispose();
+        }
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.draw();
     }
 }
