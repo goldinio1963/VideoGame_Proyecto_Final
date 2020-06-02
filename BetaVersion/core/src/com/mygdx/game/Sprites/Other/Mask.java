@@ -24,7 +24,7 @@ public class Mask extends InteractiveTileObject{
 
     public Mask(DefaultScreen screen, MapObject object){
         super(screen, object);
-        tileSet = map.getTileSets().getTileSet("tileset_gutter");
+        tileSet = map.getTileSets().getTileSet("");
         fixture.setUserData(this);
         setCategoryFilter(Horror.MASK_BIT);
     }

@@ -237,6 +237,10 @@ public class Level1Screen extends DefaultScreen{
         
         //bg.draw(gameSatge, game.res);
         //gameSatge.draw();
+        
+        /*if(!GameOver){
+            
+        }*/
     }
     
     @Override

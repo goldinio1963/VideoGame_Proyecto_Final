@@ -17,13 +17,12 @@ import com.mygdx.game.screens.DefaultScreen;
  */
 public class Ammo extends InteractiveTileObject{
     private static TiledMapTileSet tileSet;
-    private final int BLANK_COIN = 28;
 
     public Ammo(DefaultScreen screen, MapObject object){
         super(screen, object);
-        tileSet = map.getTileSets().getTileSet("tileset_gutter");
+        tileSet = map.getTileSets().getTileSet("");
         fixture.setUserData(this);
-        setCategoryFilter(Horror.MASK_BIT);
+        setCategoryFilter(Horror.AMMO_BIT);
     }
 
     public void hit(Robot player) {
