@@ -36,14 +36,14 @@ public class Ghost extends EnemyStandard{
         destroy = false;
         
         frames = new Array<TextureRegion>();
-        for(int i=0; i <6 ; i++){
-            frames.add(new TextureRegion(screen.getalAtlas().findRegion("virus")
-                    , i*24,0,24,24));
+        for(int i=4; i <11 ; i++){
+            frames.add(new TextureRegion(screen.getalAtlas().findRegion("robot")
+            , i*32,64,32,64));
         }
         walk = new Animation(0.4f, frames);
         stateTime=0;
         
-        setBounds(getX(), getY(), 16/Horror.PPM, 16/Horror.PPM);
+        setBounds(getX(), getY(), 16/Horror.PPM, 32/Horror.PPM);
     }
     
     public void update(float delta){
@@ -71,7 +71,7 @@ public class Ghost extends EnemyStandard{
         
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(6 / Horror.PPM);
+        shape.setRadius(7 / Horror.PPM);
         fdef.filter.categoryBits = Horror.ENEMY_BIT;
         fdef.filter.maskBits = Horror.GROUND_BIT | 
                 Horror.ROBOT_BIT |

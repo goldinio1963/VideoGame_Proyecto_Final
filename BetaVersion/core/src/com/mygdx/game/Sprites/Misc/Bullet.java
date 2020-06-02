@@ -42,7 +42,7 @@ public class Bullet extends Sprite {
         setToDestroy = false;
         destroy = false;
 
-        bulletStand = new TextureRegion(getTexture(), 0, 0, 32, 9);
+        bulletStand = new TextureRegion(getTexture(), 579, 698, 32, 9);
         setBounds(0, 0, 8 / Horror.PPM, 4 / Horror.PPM);
         setRegion(bulletStand);
         goingRight = robot.isRunningRight();

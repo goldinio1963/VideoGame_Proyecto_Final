@@ -52,17 +52,17 @@ public class Human extends Sprite{
         
         frames = new Array<TextureRegion>();
         for(int i=0; i <3; i++){
-            frames.add(new TextureRegion(screen.getalAtlas().findRegion("human")
-                    , i*32,0,32,64));
+            frames.add(new TextureRegion(screen.getalAtlas().findRegion("Human")
+            , i*32,0,32,64));
         }
         humanWalking = new Animation(0.4f, frames);
         stateTime = 0;
         
-        humanStand = new TextureRegion(screen.getalAtlas().findRegion("human")
+        humanStand = new TextureRegion(screen.getalAtlas().findRegion("Human")
                     ,32,0,32,64);
         setRegion(humanStand);
         
-        setBounds(getX(), getY(), 16/Horror.PPM, 16/Horror.PPM);
+        setBounds(getX(), getY(), 8/Horror.PPM, 16/Horror.PPM);
 
         defineHuman();
     }
@@ -84,7 +84,7 @@ public class Human extends Sprite{
         
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(6 / Horror.PPM);
+        shape.setRadius(7 / Horror.PPM);
         fdef.filter.categoryBits = Horror.HUMAN_BIT;
         fdef.filter.maskBits = Horror.GROUND_BIT | 
                 Horror.ROBOT_BIT |

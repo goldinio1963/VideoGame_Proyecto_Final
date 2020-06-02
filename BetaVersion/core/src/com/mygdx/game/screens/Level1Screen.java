@@ -74,7 +74,7 @@ public class Level1Screen extends DefaultScreen{
         super(game);
         
         //sprites
-        atlas = new TextureAtlas("assets.pack");
+        atlas = new TextureAtlas("human_robot_pack.pack");
         
         game.batch = new SpriteBatch();
         //Keep the screen constant for the game
@@ -122,9 +122,9 @@ public class Level1Screen extends DefaultScreen{
     
     public void handleInput(float delta) {
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-                    player.b2body.applyLinearImpulse(new Vector2(0,2f), 
+                    player.b2body.applyLinearImpulse(new Vector2(0,3f),
                         player.b2body.getWorldCenter(), true);
-                    human.b2body.applyLinearImpulse(new Vector2(0,2f), 
+                    human.b2body.applyLinearImpulse(new Vector2(0,3f),
                             human.b2body.getWorldCenter(), true);                            
         }
         if(Gdx.input.isKeyPressed(Input.Keys.D) && (player.b2body.getLinearVelocity().x <= 1.2)) {
