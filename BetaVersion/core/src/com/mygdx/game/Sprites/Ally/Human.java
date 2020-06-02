@@ -62,7 +62,7 @@ public class Human extends Sprite{
                     ,32,0,32,64);
         setRegion(humanStand);
         
-        setBounds(getX(), getY(), 8/Horror.PPM, 16/Horror.PPM);
+        setBounds(getX(), getY(), 12/Horror.PPM, 24/Horror.PPM);
 
         defineHuman();
     }
@@ -84,7 +84,7 @@ public class Human extends Sprite{
         
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(7 / Horror.PPM);
+        shape.setRadius(10 / Horror.PPM);
         fdef.filter.categoryBits = Horror.HUMAN_BIT;
         fdef.filter.maskBits = Horror.GROUND_BIT | 
                 Horror.ROBOT_BIT |

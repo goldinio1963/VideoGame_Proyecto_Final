@@ -69,7 +69,7 @@ public class Robot extends Sprite{
         defineRobot();
 
 //        playerStand = new TextureRegion(getTexture(), 166,40,32,60);
-        setBounds(0, 0, 8/Horror.PPM, 16/Horror.PPM);
+        setBounds(0, 0, 12/Horror.PPM, 24/Horror.PPM);
 //        setRegion(playerStand);
     }
 
@@ -87,7 +87,7 @@ public class Robot extends Sprite{
         
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(7 / Horror.PPM);
+        shape.setRadius(10 / Horror.PPM);
         fdef.filter.categoryBits = Horror.ROBOT_BIT;
         
         fdef.filter.maskBits = Horror.GROUND_BIT | 
