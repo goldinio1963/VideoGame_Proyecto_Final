@@ -35,6 +35,8 @@ public class VictoryScreen extends DefaultScreen{
     private Stage stage;
     private TextureAtlas atlas;
     private Skin skin;
+    private int score, lives, bullets;
+    
     
     public VictoryScreen(Horror game) {
         super(game);
@@ -43,6 +45,9 @@ public class VictoryScreen extends DefaultScreen{
         atlas = new TextureAtlas("skin/uiskin.atlas");
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"), atlas);
         setNewGame(false);
+        score = 0;
+        lives = 0;
+        bullets = 0;
     }
     
     
@@ -67,7 +72,10 @@ public class VictoryScreen extends DefaultScreen{
         
         setLevel(getLevel()+1);
         
-        System.out.println(getLevel());
+        score = Hud.getScore();
+        lives = Hud.getLives();
+        //bullets = hud.getBulletsCount();
+        
         
          //Add listeners to buttons
         playButton.addListener(new ClickListener(){
@@ -75,6 +83,8 @@ public class VictoryScreen extends DefaultScreen{
             public void clicked(InputEvent event, float x, float y) {
                 ((Horror)Gdx.app.getApplicationListener()).setScreen(new Level1Screen(game));
                 Hud.addLevel(1);
+                Hud.addLives(lives);
+                Hud.addScore(score);
                 dispose();
             }
         });

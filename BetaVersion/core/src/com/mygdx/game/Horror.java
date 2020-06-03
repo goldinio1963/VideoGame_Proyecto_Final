@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.Scenes.Hud;
 import com.mygdx.game.screens.Level1Screen;
 import com.mygdx.game.screens.MenuSrceen;
 
@@ -43,6 +44,9 @@ public class Horror extends Game {
     
     private Viewport viewport;
     private Stage stage;
+    
+    private int level;
+    private int score;
 
     @Override
     public void create() {
@@ -51,6 +55,8 @@ public class Horror extends Game {
         viewport = new FitViewport(Horror.V_WIDTH, Horror.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, batch);
         setScreen(new MenuSrceen(this));
+        level = 0;
+        score = 0;
     }
     
     @Override
@@ -58,7 +64,20 @@ public class Horror extends Game {
         super.render();
     }
 
+    public void update(float delta){
+        score = Hud.getScore();
+    }
 
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    
+    
     @Override
     public void dispose() {
         res.dispose();

@@ -31,11 +31,13 @@ public class Ghost extends EnemyStandard{
     private boolean setToDestroy;
     private boolean destroy;
     private Hud hud;
+    private boolean bullethit;
 
     public Ghost(DefaultScreen screen, float x, float y) {
         super(screen, x, y);
         setToDestroy = false;
         destroy = false;
+        bullethit = false;
         
         frames = new Array<TextureRegion>();
         for(int i=4; i <11 ; i++){
@@ -53,7 +55,9 @@ public class Ghost extends EnemyStandard{
         
         if(setToDestroy && !destroy){
             world.destroyBody(b2body);
-            hud.addScore(20);
+            if(bullethit){
+                hud.addScore(20);
+            }
             destroy = true;
         } else {
             if(!destroy) {
@@ -96,6 +100,7 @@ public class Ghost extends EnemyStandard{
     }
     
     public void hitBullet(){
+        bullethit = true;
         setToDestroy=true;
     }
     

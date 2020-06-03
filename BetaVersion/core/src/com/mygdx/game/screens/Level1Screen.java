@@ -87,7 +87,11 @@ public class Level1Screen extends DefaultScreen{
         hud = new Hud(game.batch);
         
         maploader = new TmxMapLoader();
-        map = maploader.load("Map/level1.tmx");
+        if(Hud.getLevel() == 1){
+            map = maploader.load("Map/level1.tmx");
+        } else {
+            map = maploader.load("Map/level1.tmx");
+        }
         renderer = new OrthogonalTiledMapRenderer(map, 1/Horror.PPM);
         
         gamecam.position.set(gameport.getWorldWidth()/2, 
@@ -285,7 +289,11 @@ public class Level1Screen extends DefaultScreen{
         }
         
         if(human.isSetVictory()){
-            ((Horror)Gdx.app.getApplicationListener()).setScreen(new VictoryScreen(game));
+            if(Hud.getLevel()==1){
+               ((Horror)Gdx.app.getApplicationListener()).setScreen(new VictoryScreen(game));
+            } else {
+                ((Horror)Gdx.app.getApplicationListener()).setScreen(new EndGame(game));
+            }
         }
     }
     

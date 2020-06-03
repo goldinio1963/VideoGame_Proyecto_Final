@@ -31,7 +31,7 @@ public class TutorialScreen extends DefaultScreen{
     private Stage stage;
     private TextureAtlas atlas;
     private Skin skin;
-    Texture banner; 
+    Texture banner, banner2;
     
     public TutorialScreen(Horror game) {
         super(game);
@@ -41,6 +41,7 @@ public class TutorialScreen extends DefaultScreen{
         atlas = new TextureAtlas("skin/uiskin.atlas");
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"), atlas);
         banner = new Texture("Screen/Banner/How_to_play.jpg");
+        banner2 = new Texture("Screen/Banner/How_to_score.jpg");
         
     }
     
@@ -67,7 +68,7 @@ public class TutorialScreen extends DefaultScreen{
     @Override
     public void render(float delta) {
         if(Gdx.input.justTouched()) {
-            game.setScreen(new Level1Screen((Horror) game));
+            game.setScreen(new Tutorial2((Horror) game));
             dispose();
         }
         Gdx.gl.glClearColor(0, 0, 0, 1);

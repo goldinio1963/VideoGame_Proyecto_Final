@@ -62,6 +62,9 @@ public class MenuSrceen extends DefaultScreen{
         //Stage should controll input:
         Gdx.input.setInputProcessor(stage);
         
+        //create the label font
+        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        
          //Create Table
         Table mainTable = new Table();
         //Set table to fill stage
@@ -69,6 +72,7 @@ public class MenuSrceen extends DefaultScreen{
         //Set alignment of contents in the table.
         mainTable.center();
         
+        Label title = new Label("Horror in the Dark", font);
         TextButton playButton = new TextButton("Juego Nuevo", skin);
         TextButton loadButton = new TextButton("Continuar", skin);
         TextButton scoreButton = new TextButton("Puntaje", skin);
@@ -92,7 +96,6 @@ public class MenuSrceen extends DefaultScreen{
                     int input = JOptionPane.showConfirmDialog(null,
                             "Se necesita empezar un nuevo Juego", "Ups eso no se puede", JOptionPane.DEFAULT_OPTION);
                     // 0=ok
-                    System.out.println(input);
                 } else{
                     ((Horror)Gdx.app.getApplicationListener()).setScreen(new Level1Screen(game));
                     dispose();
@@ -127,6 +130,8 @@ public class MenuSrceen extends DefaultScreen{
         });
 
         //Add buttons to table
+        mainTable.add(title);
+        mainTable.row();
         mainTable.add(playButton).pad(5f);
         mainTable.row();
         mainTable.add(loadButton).pad(5f);

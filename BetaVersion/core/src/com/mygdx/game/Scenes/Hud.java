@@ -138,6 +138,16 @@ public class Hud implements Disposable{
     public static void setLivesLabel(Label livesLabel) {
         Hud.livesLabel = livesLabel;
     }
+
+    public static Integer getLevel() {
+        return level;
+    }
+
+    public static void setLevel(Integer level) {
+        Hud.level = level;
+    }
+    
+    
     
     
 
