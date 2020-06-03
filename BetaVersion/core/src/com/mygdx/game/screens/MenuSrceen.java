@@ -22,6 +22,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Horror;
+import com.mygdx.game.Scenes.Hud;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -33,6 +35,7 @@ public class MenuSrceen extends DefaultScreen{
     private Stage stage;
     private TextureAtlas atlas;
     protected Skin skin;
+    private int lastlevel;
     
     Texture background;
     
@@ -45,9 +48,13 @@ public class MenuSrceen extends DefaultScreen{
         atlas = new TextureAtlas("skin/uiskin.atlas");
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"), atlas);
         background = new Texture("Map/png/BG1tiles.png");
+        lastlevel = 1;
         
-        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        if(!isNewGame()){
+            lastlevel = getLevel();
+        }
         
+                
     }
     
     @Override
@@ -62,36 +69,49 @@ public class MenuSrceen extends DefaultScreen{
         //Set alignment of contents in the table.
         mainTable.center();
         
-        TextButton playButton = new TextButton("New Game", skin);
-        TextButton loadButton = new TextButton("Continue", skin);
-        TextButton scoreButton = new TextButton("Scoreboard", skin);
-        TextButton creditsButton = new TextButton("Credits", skin);
+        TextButton playButton = new TextButton("Juego Nuevo", skin);
+        TextButton loadButton = new TextButton("Continuar", skin);
+        TextButton scoreButton = new TextButton("Puntaje", skin);
+        TextButton creditsButton = new TextButton("Creditos", skin);
         TextButton optionsButton = new TextButton("Options", skin);
-        TextButton exitButton = new TextButton("Exit", skin);
+        TextButton exitButton = new TextButton("Salir", skin);
         
          //Add listeners to buttons
         playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Horror)Gdx.app.getApplicationListener()).setScreen(new Level1Screen(game));
+                ((Horror)Gdx.app.getApplicationListener()).setScreen(new TutorialScreen(game));
+                setNewGame(true);
+                dispose();
             }
         });
         loadButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("load");
+                if(getLevel() == 1){
+                    int input = JOptionPane.showConfirmDialog(null,
+                            "Se necesita empezar un nuevo Juego", "Ups eso no se puede", JOptionPane.DEFAULT_OPTION);
+                    // 0=ok
+                    System.out.println(input);
+                } else{
+                    ((Horror)Gdx.app.getApplicationListener()).setScreen(new Level1Screen(game));
+                    dispose();
+                }
             }
         });
         scoreButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("score");
+                ((Horror)Gdx.app.getApplicationListener()).setScreen(new ScoreScreen(game));
+                dispose();
             }
         });
         creditsButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("credits");            }
+                ((Horror)Gdx.app.getApplicationListener()).setScreen(new CreditsScreen(game));
+                dispose();            
+            }
         });
         optionsButton.addListener(new ClickListener(){
             @Override
@@ -107,17 +127,17 @@ public class MenuSrceen extends DefaultScreen{
         });
 
         //Add buttons to table
-        mainTable.add(playButton).pad(5);
+        mainTable.add(playButton).pad(5f);
         mainTable.row();
-        mainTable.add(loadButton).pad(5);
+        mainTable.add(loadButton).pad(5f);
         mainTable.row();
-        mainTable.add(scoreButton).pad(5);
+        mainTable.add(scoreButton).pad(5f);
         mainTable.row();
         //mainTable.add(optionsButton);
         //mainTable.row();
-        mainTable.add(creditsButton).pad(5);
+        mainTable.add(creditsButton).pad(5f);
         mainTable.row();
-        mainTable.add(exitButton).pad(5);
+        mainTable.add(exitButton).pad(5f);
         
         stage.addActor(mainTable);
     }
@@ -128,10 +148,7 @@ public class MenuSrceen extends DefaultScreen{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         game.batch.begin();
-        
-        
         game.batch.draw(background, 0, 0,Horror.V_WIDTH, Horror.V_HEIGHT);
-                
         game.batch.end();
         
         stage.draw();
@@ -144,7 +161,7 @@ public class MenuSrceen extends DefaultScreen{
     
     @Override
     public void dispose(){
-        game.batch.dispose();
+        //game.batch.dispose();
         stage.dispose();
     }
     

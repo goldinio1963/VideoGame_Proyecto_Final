@@ -17,6 +17,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Horror;
 import com.mygdx.game.Sprites.Enemy.Ghost;
+import com.mygdx.game.Sprites.Other.Ammo;
+import com.mygdx.game.Sprites.Other.Mask;
 import com.mygdx.game.screens.DefaultScreen;
 import com.mygdx.game.screens.Level1Screen;
 
@@ -26,6 +28,8 @@ import com.mygdx.game.screens.Level1Screen;
  */
 public class B2WorldCreator {
     private Array<Ghost> ghosts;
+    private Array<Mask> masks;
+    private Array<Ammo> ammo;
    
     public B2WorldCreator (DefaultScreen screen) {
         World world = screen.getWorld();
@@ -110,6 +114,8 @@ public class B2WorldCreator {
             body.createFixture(fdef);
         }
         
+        
+        
         //create the fixtures for the holes
         for(MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -129,6 +135,38 @@ public class B2WorldCreator {
             body.createFixture(fdef);
         }
         
+        //Create all the mask
+        masks = new Array<Mask>();
+        for(MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            masks.add(new Mask(screen, rect.getX() / Horror.PPM, rect.getY() / Horror.PPM));
+        }
+        
+        //Create all the ammo
+        ammo = new Array<Ammo>();
+        for(MapObject object : map.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            ammo.add(new Ammo(screen, rect.getX() / Horror.PPM, rect.getY() / Horror.PPM));
+        }
+        
+        //Create the house
+        for(MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            
+            
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set((rect.getX() +  rect.getWidth()/2)/Horror.PPM, 
+                    (rect.getY() + rect.getHeight()/2)/Horror.PPM);
+            
+            body = world.createBody(bdef);
+            
+            shape.setAsBox(rect.getWidth()/2 / Horror.PPM, 
+                    rect.getHeight()/2 / Horror.PPM);
+            
+            fdef.shape = shape;
+            fdef.filter.categoryBits = Horror.HOUSE_BIT;
+            body.createFixture(fdef);
+        }
         
         //create all ghosts
         ghosts = new Array<Ghost>();
@@ -137,6 +175,14 @@ public class B2WorldCreator {
             ghosts.add(new Ghost(screen, rect.getX() / Horror.PPM, rect.getY() / Horror.PPM));
         }
         
+    }
+    
+    public Array<Mask> getMask() {
+        return masks;
+    }
+    
+    public Array<Ammo> getAmmo() {
+        return ammo;
     }
     
     public Array<Ghost> getGhosts() {

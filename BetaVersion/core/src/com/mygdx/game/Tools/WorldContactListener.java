@@ -15,6 +15,8 @@ import com.mygdx.game.Scenes.Hud;
 import com.mygdx.game.Sprites.Ally.Human;
 import com.mygdx.game.Sprites.Enemy.EnemyStandard;
 import com.mygdx.game.Sprites.Misc.Bullet;
+import com.mygdx.game.Sprites.Other.Ammo;
+import com.mygdx.game.Sprites.Other.Mask;
 import com.mygdx.game.Sprites.Robot;
 import com.mygdx.game.screens.DefaultScreen;
 import com.mygdx.game.screens.Level1Screen;
@@ -82,10 +84,32 @@ public class WorldContactListener implements ContactListener {
             case Horror.BULLET_BIT | Horror.EDGE_BIT:
             case Horror.BULLET_BIT | Horror.OBJECT_BIT:
             case Horror.BULLET_BIT | Horror.SKY_BIT:
+            case Horror.BULLET_BIT | Horror.GROUND_BIT:
                 if(fixA.getFilterData().categoryBits == Horror.ENEMY_BIT)
                     ((Bullet)fixA.getUserData()).hit();
                 else
                     ((Bullet)fixB.getUserData()).hit();
+                break;
+                
+            case Horror.ROBOT_BIT | Horror.AMMO_BIT:
+                if(fixA.getFilterData().categoryBits == Horror.ROBOT_BIT){
+                    ((Ammo)fixB.getUserData()).hit();
+                    System.out.println("enter");
+                } else
+                    ((Ammo)fixA.getUserData()).hit();
+                break;
+            case Horror.ROBOT_BIT | Horror.MASK_BIT:
+                if(fixA.getFilterData().categoryBits == Horror.ROBOT_BIT)
+                    ((Mask)fixB.getUserData()).hit();
+                else
+                    ((Mask)fixA.getUserData()).hit();
+                break;
+                
+            case Horror.HUMAN_BIT | Horror.HOUSE_BIT:
+                if(fixA.getFilterData().categoryBits == Horror.HUMAN_BIT)
+                    ((Human)fixA.getUserData()).victory();
+                else
+                    ((Human)fixB.getUserData()).victory();
                 break;
             
         }

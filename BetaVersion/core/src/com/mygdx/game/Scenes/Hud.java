@@ -25,7 +25,7 @@ public class Hud implements Disposable{
     public Stage stage;
     private Viewport viewport;
     
-    private Integer level;
+    private static Integer level;
     private static Integer score;
     private static Integer lives;
     private Integer bulletsAvailable;
@@ -34,7 +34,7 @@ public class Hud implements Disposable{
     private Label worldLabrl;
     private Label levelScoreLebel;
     private static Label scoreLabel;
-    private Label levelLabel;
+    private static Label levelLabel;
     private static Label livesLabel;
     private Label bulletsLabel;
     private Label bulletsCountLabel;
@@ -97,9 +97,19 @@ public class Hud implements Disposable{
         bulletsCountLabel.setText(String.format("%01d", bulletsAvailable));
     }
     
+    //add bullest
+    public void addBullets(int value){
+        setBulletsCount(getBulletsCount()+value);
+    }
+    
     public void update(float delta) {
         
     }
+    
+    public static void addLevel(int value){
+        level += value;
+        levelLabel.setText(String.format("%01d", level));
+    } 
     
     public static void addScore(int value){
         score += value;
@@ -113,9 +123,35 @@ public class Hud implements Disposable{
         }
     }
 
+    public static Integer getScore() {
+        return score;
+    }
+
+    public static void setScore(Integer score) {
+        Hud.score = score;
+    }
+
+    public static Label getLivesLabel() {
+        return livesLabel;
+    }
+
+    public static void setLivesLabel(Label livesLabel) {
+        Hud.livesLabel = livesLabel;
+    }
+    
+    
+
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    public static Integer getLives() {
+        return lives;
+    }
+
+    public static void setLives(Integer lives) {
+        Hud.lives = lives;
     }
     
 }

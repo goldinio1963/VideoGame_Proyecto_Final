@@ -28,6 +28,8 @@ import com.mygdx.game.Sprites.Ally.Human;
 import com.mygdx.game.Sprites.Enemy.EnemyStandard;
 import com.mygdx.game.Sprites.Enemy.Ghost;
 import com.mygdx.game.Sprites.Misc.Bullet;
+import com.mygdx.game.Sprites.Other.Ammo;
+import com.mygdx.game.Sprites.Other.Mask;
 import com.mygdx.game.Sprites.Robot;
 import com.mygdx.game.Tools.B2WorldCreator;
 import com.mygdx.game.Tools.WorldContactListener;
@@ -122,9 +124,9 @@ public class Level1Screen extends DefaultScreen{
     
     public void handleInput(float delta) {
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-                    player.b2body.applyLinearImpulse(new Vector2(0,3f),
+                    player.b2body.applyLinearImpulse(new Vector2(0,2f), 
                         player.b2body.getWorldCenter(), true);
-                    human.b2body.applyLinearImpulse(new Vector2(0,3f),
+                    human.b2body.applyLinearImpulse(new Vector2(0,2f), 
                             human.b2body.getWorldCenter(), true);                            
         }
         if(Gdx.input.isKeyPressed(Input.Keys.D) && (player.b2body.getLinearVelocity().x <= 1.2)) {
@@ -149,12 +151,12 @@ public class Level1Screen extends DefaultScreen{
                 // Check direction of robot moving
                 if (player.isRunningRight()) {
                     bullets.add(new Bullet(this, player, 
-                            player.b2body.getPosition().x + (16/Horror.PPM), 
-                            player.b2body.getPosition().y));
+                            player.b2body.getPosition().x + (8/Horror.PPM), 
+                            player.b2body.getPosition().y + (8/Horror.PPM)));
                 } else {
                     bullets.add(new Bullet(this, player,
                             player.b2body.getPosition().x - (16 / Horror.PPM), 
-                            player.b2body.getPosition().y));
+                            player.b2body.getPosition().y + (16/Horror.PPM)));
                 }
                 // Updates bullet count
                 hud.setBulletsCount(hud.getBulletsCount() - 1);
@@ -173,8 +175,36 @@ public class Level1Screen extends DefaultScreen{
         human.update(delta);
         hud.update(delta);
         
+        if(human.isReset()){
+            player.allyfall();
+            human.setReset(false);
+        }
+        
+        if(player.isReset()){
+            human.allyfall();
+            player.setReset(false);
+        }
+        
+        
         for(EnemyStandard enemy : creator.getGhosts()){
             enemy.update(delta);
+            
+        }
+        
+        for(Ammo ammo : creator.getAmmo()){
+            ammo.update(delta);
+            if(ammo.isAddBullets()){
+                hud.addBullets(4);
+                ammo.setAddBullets(false);
+            }
+        }
+        
+        for(Mask masks : creator.getMask()){
+            masks.update(delta);
+            if(masks.isAddLives()){
+                hud.addLives(1);
+                masks.setAddLives(false);
+            }
         }
         
         // Update bullet
@@ -202,6 +232,10 @@ public class Level1Screen extends DefaultScreen{
         
         gamecam.update();
         renderer.setView(gamecam);
+        
+        if(hud.getLives() == 0){
+            setGameOver(true);
+        }
     }
     
     @Override
@@ -226,6 +260,14 @@ public class Level1Screen extends DefaultScreen{
             enemy.draw(game.batch);
         }
         
+        for(Ammo ammo : creator.getAmmo()){
+            ammo.draw(game.batch);
+        }
+        
+        for(Mask masks : creator.getMask()){
+            masks.draw(game.batch);
+        }
+        
         for (Bullet bullet : bullets) {
             bullet.draw(game.batch);
         }
@@ -238,9 +280,13 @@ public class Level1Screen extends DefaultScreen{
         //bg.draw(gameSatge, game.res);
         //gameSatge.draw();
         
-        /*if(!GameOver){
-            
-        }*/
+        if(gameOver){
+            ((Horror)Gdx.app.getApplicationListener()).setScreen(new GameOverScreen(game));
+        }
+        
+        if(human.isSetVictory()){
+            ((Horror)Gdx.app.getApplicationListener()).setScreen(new VictoryScreen(game));
+        }
     }
     
     @Override

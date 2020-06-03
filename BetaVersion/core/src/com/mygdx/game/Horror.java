@@ -4,8 +4,12 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.screens.Level1Screen;
 import com.mygdx.game.screens.MenuSrceen;
 
@@ -35,11 +39,17 @@ public class Horror extends Game {
     public static final short BULLET_BIT = 512;
     public static final short MASK_BIT = 1024;
     public static final short AMMO_BIT = 2048;
+    public static final short HOUSE_BIT = 4096;
+    
+    private Viewport viewport;
+    private Stage stage;
 
     @Override
     public void create() {
         res = new Resources();
         batch = new SpriteBatch();
+        viewport = new FitViewport(Horror.V_WIDTH, Horror.V_HEIGHT, new OrthographicCamera());
+        stage = new Stage(viewport, batch);
         setScreen(new MenuSrceen(this));
     }
     

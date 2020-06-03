@@ -39,6 +39,7 @@ public class Human extends Sprite{
     public State previousState;
     private float stateTimer;
     private boolean runningRight;
+    private boolean fall, reset, allyfall, victory, setVictory;
     private TextureRegion humanStand;
     
     
@@ -47,7 +48,12 @@ public class Human extends Sprite{
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
+        fall = false;
+        reset = false;
         runningRight = true;
+        allyfall = false;
+        victory = false;
+        setVictory = false;
         
         
         frames = new Array<TextureRegion>();
@@ -69,6 +75,16 @@ public class Human extends Sprite{
     
     public void update(float delta){
         
+        if(fall) {
+            if(Hud.getLives() != 0){
+               redefineHuman(); 
+            }
+            fall = false;
+        }
+        
+        if(victory){
+            setSetVictory(true);
+        }
         
         setPosition(b2body.getPosition().x - getWidth()/2, 
                 b2body.getPosition().y - getHeight()/2);
@@ -84,17 +100,47 @@ public class Human extends Sprite{
         
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(10 / Horror.PPM);
+        shape.setRadius(6 / Horror.PPM);
         fdef.filter.categoryBits = Horror.HUMAN_BIT;
         fdef.filter.maskBits = Horror.GROUND_BIT | 
                 Horror.ROBOT_BIT |
                 Horror.ENEMY_BIT |
                 Horror.OBJECT_BIT |
                 Horror.HOLE_BIT |
+                Horror.HOUSE_BIT | 
                 Horror.SKY_BIT; 
         
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
+    }
+    
+    public void redefineHuman(){
+        world.destroyBody(b2body);
+        
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(16/Horror.PPM,64/Horror.PPM);
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        b2body = world.createBody(bdef);
+        
+        FixtureDef fdef = new FixtureDef();
+        CircleShape shape = new CircleShape();
+        shape.setRadius(6 / Horror.PPM);
+        fdef.filter.categoryBits = Horror.HUMAN_BIT;
+        fdef.filter.maskBits = Horror.GROUND_BIT | 
+                Horror.ROBOT_BIT |
+                Horror.ENEMY_BIT |
+                Horror.OBJECT_BIT |
+                Horror.HOLE_BIT |
+                Horror.HOUSE_BIT |
+                Horror.SKY_BIT; 
+        
+        fdef.shape = shape;
+        b2body.createFixture(fdef).setUserData(this);
+        
+        if(allyfall){
+            setReset(true);
+            allyfall = false;
+        }
     }
     
     
@@ -149,8 +195,40 @@ public class Human extends Sprite{
         } else
             return State.STANDING;
     }
+
+    public boolean isFall() {
+        return fall;
+    }
+
+    public boolean isReset() {
+        return reset;
+    }
+
+    public void setReset(boolean reset) {
+        this.reset = reset;
+    }
+
+    public boolean isSetVictory() {
+        return setVictory;
+    }
+
+    public void setSetVictory(boolean setVictory) {
+        this.setVictory = setVictory;
+    }
+    
     
     public void fall(){
         Hud.addLives(-1);
+        allyfall = true;
+        fall = true;
+    }
+    
+    public void allyfall(){
+        Hud.addLives(-1);
+        fall = true;
+    }
+    
+    public void victory(){
+       victory = true;
     }
 }

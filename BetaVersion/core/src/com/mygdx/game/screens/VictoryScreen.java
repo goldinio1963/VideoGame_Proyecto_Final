@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -22,25 +23,26 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Horror;
+import com.mygdx.game.Scenes.Hud;
 
 /**
  *
  * @author Adolfo
  */
-public class GameOverScreen extends DefaultScreen{
+public class VictoryScreen extends DefaultScreen{
     
     private Viewport viewport;
     private Stage stage;
     private TextureAtlas atlas;
     private Skin skin;
     
-    public GameOverScreen(Horror game) {
+    public VictoryScreen(Horror game) {
         super(game);
         viewport = new FitViewport(Horror.V_WIDTH, Horror.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, ((Horror)game).batch);
         atlas = new TextureAtlas("skin/uiskin.atlas");
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"), atlas);
-        
+        setNewGame(false);
     }
     
     
@@ -59,15 +61,20 @@ public class GameOverScreen extends DefaultScreen{
         //Set alignment of contents in the table.
         table.center();
         
-        Label gameOverLabel = new Label("'Game Over'", font);
-        TextButton playButton = new TextButton("Continuar", skin);
+        Label title = new Label("'felicidades'", font);
+        TextButton playButton = new TextButton("Siguiente Nivel", skin);
         TextButton exitButton = new TextButton("Salir", skin);
+        
+        setLevel(getLevel()+1);
+        
+        System.out.println(getLevel());
         
          //Add listeners to buttons
         playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ((Horror)Gdx.app.getApplicationListener()).setScreen(new Level1Screen(game));
+                Hud.addLevel(1);
                 dispose();
             }
         });
@@ -79,7 +86,7 @@ public class GameOverScreen extends DefaultScreen{
             }
         });
 
-        table.add(gameOverLabel).expandX();
+        table.add(title).expandX();
         table.row();
         table.add(playButton).expandX().padTop(5f);
         table.row();
@@ -102,3 +109,4 @@ public class GameOverScreen extends DefaultScreen{
         stage.dispose();
     }
 }
+    

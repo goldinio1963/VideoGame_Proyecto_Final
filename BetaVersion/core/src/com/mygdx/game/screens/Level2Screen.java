@@ -5,16 +5,10 @@
  */
 package com.mygdx.game.screens;
 
-import com.mygdx.game.Horror;
-
 /**
  *
  * @author Adolfo
  */
-public class GameOverScreen extends DefaultScreen{
-    
-    public GameOverScreen(Horror game) {
-        super(game);
-    }
+public class Level2Screen {
     
 }

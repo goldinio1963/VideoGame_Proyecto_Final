@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Horror;
+import com.mygdx.game.Scenes.Hud;
 import com.mygdx.game.screens.DefaultScreen;
 import com.mygdx.game.screens.Level1Screen;
 
@@ -29,6 +30,7 @@ public class Ghost extends EnemyStandard{
     private Array<TextureRegion> frames;
     private boolean setToDestroy;
     private boolean destroy;
+    private Hud hud;
 
     public Ghost(DefaultScreen screen, float x, float y) {
         super(screen, x, y);
@@ -38,7 +40,7 @@ public class Ghost extends EnemyStandard{
         frames = new Array<TextureRegion>();
         for(int i=4; i <11 ; i++){
             frames.add(new TextureRegion(screen.getalAtlas().findRegion("robot")
-            , i*32,64,32,64));
+            , i*32,96,32,32));
         }
         walk = new Animation(0.4f, frames);
         stateTime=0;
@@ -51,6 +53,7 @@ public class Ghost extends EnemyStandard{
         
         if(setToDestroy && !destroy){
             world.destroyBody(b2body);
+            hud.addScore(20);
             destroy = true;
         } else {
             if(!destroy) {
@@ -71,7 +74,7 @@ public class Ghost extends EnemyStandard{
         
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(7 / Horror.PPM);
+        shape.setRadius(6 / Horror.PPM);
         fdef.filter.categoryBits = Horror.ENEMY_BIT;
         fdef.filter.maskBits = Horror.GROUND_BIT | 
                 Horror.ROBOT_BIT |

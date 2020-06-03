@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mygdx.game.screens;
 
 import com.badlogic.gdx.Gdx;
@@ -10,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -27,19 +23,21 @@ import com.mygdx.game.Horror;
  *
  * @author Adolfo
  */
-public class GameOverScreen extends DefaultScreen{
+public class ScoreScreen extends DefaultScreen{
     
     private Viewport viewport;
     private Stage stage;
     private TextureAtlas atlas;
     private Skin skin;
+    private int score;
     
-    public GameOverScreen(Horror game) {
+    public ScoreScreen(Horror game) {
         super(game);
         viewport = new FitViewport(Horror.V_WIDTH, Horror.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, ((Horror)game).batch);
         atlas = new TextureAtlas("skin/uiskin.atlas");
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"), atlas);
+        score = 0;
         
     }
     
@@ -52,6 +50,9 @@ public class GameOverScreen extends DefaultScreen{
         //create the label font
         Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
         
+        //getScore
+        score = getLevelScore();
+        
          //Create Table
         Table table = new Table();
         //Set table to fill stage
@@ -59,18 +60,14 @@ public class GameOverScreen extends DefaultScreen{
         //Set alignment of contents in the table.
         table.center();
         
-        Label gameOverLabel = new Label("'Game Over'", font);
-        TextButton playButton = new TextButton("Continuar", skin);
-        TextButton exitButton = new TextButton("Salir", skin);
+        Label title = new Label("'Maximo Puntaje'", font);
+        Label puntaje = new Label("'Ultimo Puntaje:  '" + 
+                String.format("%02d", score) , font);
+        TextButton exitButton = new TextButton("Regresar", skin);
+        
+        setLevel(getLevel()+1);
         
          //Add listeners to buttons
-        playButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ((Horror)Gdx.app.getApplicationListener()).setScreen(new Level1Screen(game));
-                dispose();
-            }
-        });
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -79,9 +76,9 @@ public class GameOverScreen extends DefaultScreen{
             }
         });
 
-        table.add(gameOverLabel).expandX();
+        table.add(title).expandX();
         table.row();
-        table.add(playButton).expandX().padTop(5f);
+        table.add(puntaje).expandX().padTop(5f);
         table.row();
         table.add(exitButton).expandX().padTop(5f);
 
@@ -102,3 +99,4 @@ public class GameOverScreen extends DefaultScreen{
         stage.dispose();
     }
 }
+    

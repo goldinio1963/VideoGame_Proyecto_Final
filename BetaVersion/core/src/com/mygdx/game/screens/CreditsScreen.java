@@ -27,78 +27,96 @@ import com.mygdx.game.Horror;
  *
  * @author Adolfo
  */
-public class GameOverScreen extends DefaultScreen{
+public class CreditsScreen extends DefaultScreen{
     
     private Viewport viewport;
     private Stage stage;
     private TextureAtlas atlas;
-    private Skin skin;
+    protected Skin skin;
     
-    public GameOverScreen(Horror game) {
+    Texture background;
+       
+    public CreditsScreen(Horror game) {
         super(game);
+        
         viewport = new FitViewport(Horror.V_WIDTH, Horror.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, ((Horror)game).batch);
         atlas = new TextureAtlas("skin/uiskin.atlas");
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"), atlas);
-        
+        background = new Texture("Map/png/BG1tiles.png");
     }
-    
     
     @Override
     public void show() {
         //Stage should controll input:
         Gdx.input.setInputProcessor(stage);
         
+        
         //create the label font
         Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
         
          //Create Table
-        Table table = new Table();
+        Table mainTable = new Table();
         //Set table to fill stage
-        table.setFillParent(true);
+        mainTable.setFillParent(true);
         //Set alignment of contents in the table.
-        table.center();
+        mainTable.center();
         
-        Label gameOverLabel = new Label("'Game Over'", font);
-        TextButton playButton = new TextButton("Continuar", skin);
-        TextButton exitButton = new TextButton("Salir", skin);
+        Label title = new Label("Creditos", font);
+        Label adolfo = new Label("Adolfo Lerma A00822029", font);
+        Label adrian = new Label("Jesus Adrian A001193991", font);
+        Label andre = new Label("Andre Lujan A01540245", font);
+        Label daniel = new Label("Daniel Castro A01089938", font);
+        TextButton returnbutton = new TextButton("Exit", skin);
         
-         //Add listeners to buttons
-        playButton.addListener(new ClickListener(){
+        
+        returnbutton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Horror)Gdx.app.getApplicationListener()).setScreen(new Level1Screen(game));
-                dispose();
-            }
-        });
-        exitButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ((Horror)Gdx.app.getApplicationListener()).setScreen(new MenuSrceen(game));
-                dispose();
+               ((Horror)Gdx.app.getApplicationListener()).setScreen(new MenuSrceen(game));
             }
         });
 
-        table.add(gameOverLabel).expandX();
-        table.row();
-        table.add(playButton).expandX().padTop(5f);
-        table.row();
-        table.add(exitButton).expandX().padTop(5f);
-
-        stage.addActor(table);
+        //Add buttons to table
+        mainTable.add(title).expandX();
+        mainTable.row();
+        mainTable.add(adolfo).expandX();
+        mainTable.row();
+        mainTable.add(adrian).expandX();
+        mainTable.row();
+        mainTable.add(andre).expandX();
+        mainTable.row();
+        mainTable.add(daniel).expandX();
+        mainTable.row();
+        mainTable.add(returnbutton).pad(5f);
         
+        stage.addActor(mainTable);
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
+        game.batch.begin();
+        game.batch.draw(background, 0, 0,Horror.V_WIDTH, Horror.V_HEIGHT);
+        game.batch.end();
+        
         stage.draw();
+        
     }
-    
+
+    @Override
+    public void resize(int i, int i1) {
+    }
     
     @Override
     public void dispose(){
+        //game.batch.dispose();
         stage.dispose();
     }
+    
+    
+    
+    
 }
