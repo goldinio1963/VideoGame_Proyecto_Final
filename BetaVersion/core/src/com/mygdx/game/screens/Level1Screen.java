@@ -91,7 +91,6 @@ public class Level1Screen extends DefaultScreen{
         hud = new Hud(game.batch);
         
         maploader = new TmxMapLoader();
-        System.out.println(Hud.getLevel());
         map = maploader.load("Map/level1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1/Horror.PPM);
         
@@ -114,7 +113,7 @@ public class Level1Screen extends DefaultScreen{
         //bg = new Background();
         world.setContactListener(new WorldContactListener());
 
-        music = Horror.manager.get("audio/song.mp3", Music.class);
+        music = Horror.manager.get("audio/level1.mp3", Music.class);
         music.setLooping(true);
         music.setVolume(.1f);
         music.play();

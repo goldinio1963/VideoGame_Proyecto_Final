@@ -62,7 +62,8 @@ public class Horror extends Game {
         score = 0;
         //Loads music
         manager = new AssetManager();
-        manager.load("audio/song.mp3", Music.class);
+        manager.load("audio/level1.mp3", Music.class);
+        manager.load("audio/level2.mp3", Music.class);
         manager.load("audio/menu.mp3", Music.class);
         manager.finishLoading();
 
