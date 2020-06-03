@@ -7,6 +7,7 @@ package com.mygdx.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -70,6 +71,9 @@ public class Level1Screen extends DefaultScreen{
     // Bullets array
     ArrayList<Bullet> bullets;
     private int bulletsCount;
+
+    //Music
+    private Music music;
     
     
     public Level1Screen(Horror game) {
@@ -90,7 +94,7 @@ public class Level1Screen extends DefaultScreen{
         if(Hud.getLevel() == 1){
             map = maploader.load("Map/level1.tmx");
         } else {
-            map = maploader.load("Map/level1.tmx");
+            map = maploader.load("Map/level2.tmx");
         }
         renderer = new OrthogonalTiledMapRenderer(map, 1/Horror.PPM);
         
@@ -112,6 +116,10 @@ public class Level1Screen extends DefaultScreen{
         //gameSatge = new Stage(gameport, batch);
         //bg = new Background();
         world.setContactListener(new WorldContactListener());
+
+        music = Horror.manager.get("audio/song.mp3", Music.class);
+        music.setLooping(true);
+        music.play();
     }
     
     public TiledMap getMap() {
@@ -128,9 +136,9 @@ public class Level1Screen extends DefaultScreen{
     
     public void handleInput(float delta) {
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-                    player.b2body.applyLinearImpulse(new Vector2(0,2f), 
+                    player.b2body.applyLinearImpulse(new Vector2(0,3f),
                         player.b2body.getWorldCenter(), true);
-                    human.b2body.applyLinearImpulse(new Vector2(0,2f), 
+                    human.b2body.applyLinearImpulse(new Vector2(0,3f),
                             human.b2body.getWorldCenter(), true);                            
         }
         if(Gdx.input.isKeyPressed(Input.Keys.D) && (player.b2body.getLinearVelocity().x <= 1.2)) {
@@ -313,5 +321,6 @@ public class Level1Screen extends DefaultScreen{
         b2dr.dispose();
         hud.dispose();
         game.batch.dispose();
+        music.stop();
     }
 }

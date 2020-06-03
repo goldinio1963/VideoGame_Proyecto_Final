@@ -49,8 +49,8 @@ public class Mask extends Sprite{
         defineMask();
         
         //aqui va la imagen
-        mask = new TextureRegion(getTexture(), 579, 698, 32, 9);
-        setBounds(0, 0, 8 / Horror.PPM, 4 / Horror.PPM);
+        mask = new TextureRegion(getTexture(), 388, 227, 32, 32);
+        setBounds(0, 0, 10 / Horror.PPM, 10 / Horror.PPM);
         setRegion(mask);
     }
     

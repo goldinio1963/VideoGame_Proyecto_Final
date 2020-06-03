@@ -3,6 +3,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -48,15 +50,23 @@ public class Horror extends Game {
     private int level;
     private int score;
 
+    public static AssetManager manager;
+
     @Override
     public void create() {
         res = new Resources();
         batch = new SpriteBatch();
         viewport = new FitViewport(Horror.V_WIDTH, Horror.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, batch);
-        setScreen(new MenuSrceen(this));
         level = 0;
         score = 0;
+        //Loads music
+        manager = new AssetManager();
+        manager.load("audio/song.mp3", Music.class);
+        manager.load("audio/menu.mp3", Music.class);
+        manager.finishLoading();
+
+        setScreen(new MenuSrceen(this));
     }
     
     @Override
@@ -81,5 +91,7 @@ public class Horror extends Game {
     @Override
     public void dispose() {
         res.dispose();
+        manager.dispose();
+        batch.dispose();
     }
 }

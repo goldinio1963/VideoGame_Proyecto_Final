@@ -6,6 +6,7 @@
 package com.mygdx.game.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -38,7 +39,9 @@ public class MenuSrceen extends DefaultScreen{
     private int lastlevel;
     
     Texture background;
-    
+
+    //Music
+    private Music music;
     
     public MenuSrceen(Horror game) {
         super(game);
@@ -53,8 +56,11 @@ public class MenuSrceen extends DefaultScreen{
         if(!isNewGame()){
             lastlevel = getLevel();
         }
-        
-                
+
+        music = Horror.manager.get("audio/menu.mp3", Music.class);
+        music.setLooping(true);
+        music.play();
+
     }
     
     @Override
@@ -167,6 +173,7 @@ public class MenuSrceen extends DefaultScreen{
     @Override
     public void dispose(){
         //game.batch.dispose();
+        music.stop();
         stage.dispose();
     }
     

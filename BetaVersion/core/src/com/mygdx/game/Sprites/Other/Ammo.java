@@ -39,7 +39,7 @@ public class Ammo extends Sprite{
     private Hud hud;
 
     public Ammo(DefaultScreen screen, float x, float y){
-        super(screen.getalAtlas().findRegion("bullet"));
+        super(screen.getalAtlas().findRegion("robot"));
         this.world = screen.getWorld();
         this.x = x;
         this.y = y;
@@ -48,8 +48,8 @@ public class Ammo extends Sprite{
         addBullets = false;
         defineAmmo();
         
-        ammo = new TextureRegion(getTexture(), 579, 698, 32, 9);
-        setBounds(0, 0, 8 / Horror.PPM, 4 / Horror.PPM);
+        ammo = new TextureRegion(getTexture(), 352, 227, 32, 32);
+        setBounds(0, 0, 10 / Horror.PPM, 10 / Horror.PPM);
         setRegion(ammo);
         //aqui va la imagen
     }
