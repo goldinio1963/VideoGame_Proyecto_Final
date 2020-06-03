@@ -69,7 +69,7 @@ public class Hud implements Disposable{
                 new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         livesLabel = new Label (String.format("%01d", lives), 
                 new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        bulletsLabel = new Label("BULLETS", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        bulletsLabel = new Label("Balas", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
         table.add(robotLabel).expandX().padTop(10);
         table.add(worldLabrl).expandX().padTop(10);

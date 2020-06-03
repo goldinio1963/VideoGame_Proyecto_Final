@@ -91,11 +91,8 @@ public class Level1Screen extends DefaultScreen{
         hud = new Hud(game.batch);
         
         maploader = new TmxMapLoader();
-        if(Hud.getLevel() == 1){
-            map = maploader.load("Map/level1.tmx");
-        } else {
-            map = maploader.load("Map/level2.tmx");
-        }
+        System.out.println(Hud.getLevel());
+        map = maploader.load("Map/level1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1/Horror.PPM);
         
         gamecam.position.set(gameport.getWorldWidth()/2, 
@@ -119,6 +116,7 @@ public class Level1Screen extends DefaultScreen{
 
         music = Horror.manager.get("audio/song.mp3", Music.class);
         music.setLooping(true);
+        music.setVolume(.1f);
         music.play();
     }
     
@@ -261,7 +259,7 @@ public class Level1Screen extends DefaultScreen{
         renderer.render();
         
         //render the box2d debug object
-        b2dr.render(world, gamecam.combined);
+        //b2dr.render(world, gamecam.combined);
         
         //draw player
         game.batch.setProjectionMatrix(gamecam.combined);
@@ -297,6 +295,7 @@ public class Level1Screen extends DefaultScreen{
         }
         
         if(human.isSetVictory()){
+            music.stop();
             if(Hud.getLevel()==1){
                ((Horror)Gdx.app.getApplicationListener()).setScreen(new VictoryScreen(game));
             } else {

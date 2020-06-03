@@ -81,9 +81,10 @@ public class VictoryScreen extends DefaultScreen{
         playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Horror)Gdx.app.getApplicationListener()).setScreen(new Level1Screen(game));
+                ((Horror)Gdx.app.getApplicationListener()).setScreen(new Level2Screen(game));
                 Hud.addLevel(1);
-                Hud.addLives(lives);
+                setLevel(2);
+                Hud.addLives(lives - 3);
                 Hud.addScore(score);
                 dispose();
             }

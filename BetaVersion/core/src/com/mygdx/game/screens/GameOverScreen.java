@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Horror;
+import com.mygdx.game.Scenes.Hud;
 
 /**
  *
@@ -33,6 +34,7 @@ public class GameOverScreen extends DefaultScreen{
     private Stage stage;
     private TextureAtlas atlas;
     private Skin skin;
+    private int score;
     
     public GameOverScreen(Horror game) {
         super(game);
@@ -40,7 +42,7 @@ public class GameOverScreen extends DefaultScreen{
         stage = new Stage(viewport, ((Horror)game).batch);
         atlas = new TextureAtlas("skin/uiskin.atlas");
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"), atlas);
-        
+        score = 0;
     }
     
     
@@ -49,6 +51,7 @@ public class GameOverScreen extends DefaultScreen{
         //Stage should controll input:
         Gdx.input.setInputProcessor(stage);
         
+        score = Hud.getScore();
         //create the label font
         Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
         
@@ -67,7 +70,13 @@ public class GameOverScreen extends DefaultScreen{
         playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Horror)Gdx.app.getApplicationListener()).setScreen(new Level1Screen(game));
+                if(Hud.getLevel() == 1) {
+                    ((Horror)Gdx.app.getApplicationListener()).setScreen(new Level1Screen(game));
+                } else {
+                    ((Horror)Gdx.app.getApplicationListener()).setScreen(new Level2Screen(game));
+                    Hud.addLevel(1);
+                    Hud.addScore(score);
+                }
                 dispose();
             }
         });

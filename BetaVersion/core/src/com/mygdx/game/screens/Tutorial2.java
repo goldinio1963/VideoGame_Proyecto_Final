@@ -38,8 +38,8 @@ public class Tutorial2 extends DefaultScreen{
         stage = new Stage(viewport, ((Horror)game).batch);
         atlas = new TextureAtlas("skin/uiskin.atlas");
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"), atlas);
-        banner = new Texture("Screen/Banner/How_to_play.jpg");
-        banner2 = new Texture("Screen/Banner/How_to_score.jpg");
+        banner = new Texture("Screen/Banner/play.jpg");
+        banner2 = new Texture("Screen/Banner/score.jpg");
         
     }
     
@@ -56,7 +56,7 @@ public class Tutorial2 extends DefaultScreen{
         //Set alignment of contents in the table.
         table.center();
         
-        Label gameOverLabel = new Label("Click to continue", font);
+        Label gameOverLabel = new Label("Click para continuar", font);
         
         table.add(gameOverLabel).expandX();
         

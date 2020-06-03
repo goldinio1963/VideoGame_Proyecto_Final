@@ -67,7 +67,7 @@ public class CreditsScreen extends DefaultScreen{
         Label adrian = new Label("Jesus Adrian A001193991", font);
         Label andre = new Label("Andre Lujan A01540245", font);
         Label daniel = new Label("Daniel Castro A01089938", font);
-        TextButton returnbutton = new TextButton("Exit", skin);
+        TextButton returnbutton = new TextButton("Salir", skin);
         
         
         returnbutton.addListener(new ClickListener(){
